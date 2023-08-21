@@ -1,0 +1,4 @@
+.placeholder::before {
+  @apply text-gray-400 pointer-events-none;
+  content: "Écrire un message...";
+}
