@@ -1,4 +1,5 @@
 import "./App.css";
+import * as React from "react";
 import {
   Navigate,
   Outlet,
@@ -13,6 +14,8 @@ import Login from "@/views/Login";
 import TaskPage from "./views/Tasks";
 import MessagePage from "./views/Messages";
 import SettingsProfilePage from "./views/Settings";
+import DocPage from "./views/Docs";
+import AdminPage from "./views/Admin";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +43,20 @@ const router = createBrowserRouter([
         path: "messages",
         Component: MessagePage,
       },
+      {
+        path: "docs",
+        Component: DocPage,
+      },
+      {
+        path: "admin",
+        Component: RequireAdmin,
+        children: [
+          {
+            index: true,
+            element: <AdminPage />,
+          },
+        ],
+      },
     ],
   },
 ]);
@@ -56,6 +73,29 @@ function RequireAuth() {
         <Outlet />
       </Layout>
     );
+  }
+}
+
+function RequireAdmin() {
+  const { user } = useAuth();
+  const location = useLocation();
+  const [isLoading, setIsLoading] = React.useState(true); // Ajouter un état de chargement
+
+  // Utiliser un effet pour gérer le chargement
+  React.useEffect(() => {
+    if (user && user.role) {
+      setIsLoading(false); // Marquer le chargement comme terminé
+    }
+  }, [user]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (user && user.role === "admin") {
+    return <Outlet />;
+  } else {
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 }
 

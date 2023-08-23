@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import bgLoginPage from "@/assets/bg-login.jpg";
 
 import {
   Form,
@@ -69,21 +68,8 @@ export default function Login() {
       });
   }
 
-  function getBg() {
-    const storedImage = localStorage.getItem("backgroundImage");
-    if (storedImage) {
-      return storedImage;
-    } else {
-      localStorage.setItem("backgroundImage", bgLoginPage);
-      return bgLoginPage;
-    }
-  }
-
   return (
     <div className="h-[80vh] flex items-center">
-      <div className="absolute overflow-hidden inset-0">
-        <img src={getBg()} />
-      </div>
       <Card className="z-10 w-[350px] mx-auto">
         <Form {...form}>
           <CardHeader>

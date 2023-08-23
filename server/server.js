@@ -12,6 +12,7 @@ const issueRoutes = require("./routes/issueRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const taskRoutes = require("./routes/taskRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
+const metricRoutes = require("./routes/metricRoutes");
 
 const app = express();
 const httpServer = createServer(app);
@@ -47,6 +48,7 @@ app.use("/api/issues", issueRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/tasks", taskRoutes);
+app.use("/api/metrics", metricRoutes);
 
 // Démarrer le serveur
 httpServer.listen(port, () => {

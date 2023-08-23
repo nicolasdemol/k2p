@@ -3,10 +3,10 @@ import { api } from "@/services/api";
 
 import { columns } from "@/components/tasks/columns";
 import { DataTable } from "@/components/tasks/data-table";
-import { taskSchema } from "@/components/tasks/data/schema";
+import { Task } from "@/components/tasks/data/schema";
 
 export default function TaskPage() {
-  const [tasks, setTasks] = React.useState(taskSchema);
+  const [tasks, setTasks] = React.useState<Task[]>([]);
 
   React.useEffect(() => {
     const fetchTasks = async () => {
@@ -21,7 +21,7 @@ export default function TaskPage() {
         <div className="flex items-center justify-between space-y-2">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">
-              Tâches à réaliser
+              Planning
             </h2>
             <p className="text-muted-foreground">
               Retrouvez ici la liste des tâches mensuelles.

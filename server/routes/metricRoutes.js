@@ -1,0 +1,9 @@
+const express = require("express");
+const router = express.Router();
+const metricController = require("../controllers/metricController");
+
+router.get("/ca", metricController.getCA);
+router.get("/productivity", metricController.getProductivity);
+router.post("/add", metricController.addMetric);
+
+module.exports = router;

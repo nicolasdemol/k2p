@@ -1,5 +1,3 @@
-import { Metadata } from "next";
-import Image from "next/image";
 import { CounterClockwiseClockIcon } from "@radix-ui/react-icons";
 
 import { Button } from "@/components/ui/button";
@@ -13,30 +11,27 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 
-import { CodeViewer } from "./components/code-viewer";
-import { MaxLengthSelector } from "./components/maxlength-selector";
-import { ModelSelector } from "./components/model-selector";
-import { PresetActions } from "./components/preset-actions";
-import { PresetSave } from "./components/preset-save";
-import { PresetSelector } from "./components/preset-selector";
-import { PresetShare } from "./components/preset-share";
-import { TemperatureSelector } from "./components/temperature-selector";
-import { TopPSelector } from "./components/top-p-selector";
-import { models, types } from "./data/models";
-import { presets } from "./data/presets";
+import { CodeViewer } from "@/components/docs/code-viewer";
+import { ModelSelector } from "@/components/docs/model-selector";
+import { PresetActions } from "@/components/docs/preset-actions";
+import { PresetSave } from "@/components/docs/preset-save";
+import { PresetSelector } from "@/components/docs/preset-selector";
+import { PresetShare } from "@/components/docs/preset-share";
+import { models, types } from "@/components/docs/data/models";
+import { presets } from "@/components/docs/data/presets";
 
 export default function DocPage() {
   return (
     <>
       <div className="md:hidden">
-        <Image
+        <img
           src="/examples/playground-light.png"
           width={1280}
           height={916}
           alt="Playground"
           className="block dark:hidden"
         />
-        <Image
+        <img
           src="/examples/playground-dark.png"
           width={1280}
           height={916}
@@ -44,9 +39,9 @@ export default function DocPage() {
           className="hidden dark:block"
         />
       </div>
-      <div className="hidden h-full flex-col md:flex">
+      <div className="hidden flex-col md:flex h-[calc(100vh-70px)]">
         <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
-          <h2 className="text-lg font-semibold">Playground</h2>
+          <h2 className="text-lg font-semibold">Documents</h2>
           <div className="ml-auto flex w-full space-x-2 sm:justify-end">
             <PresetSelector presets={presets} />
             <PresetSave />
@@ -240,19 +235,16 @@ export default function DocPage() {
                   </TabsList>
                 </div>
                 <ModelSelector types={types} models={models} />
-                <TemperatureSelector defaultValue={[0.56]} />
-                <MaxLengthSelector defaultValue={[256]} />
-                <TopPSelector defaultValue={[0.9]} />
               </div>
               <div className="md:order-1">
-                <TabsContent value="complete" className="mt-0 border-0 p-0">
+                <TabsContent value="complete" className="h-full mt-0 border-0 p-0">
                   <div className="flex h-full flex-col space-y-4">
                     <Textarea
                       placeholder="Write a tagline for an ice cream shop"
-                      className="min-h-[400px] flex-1 p-4 md:min-h-[700px] lg:min-h-[700px]"
+                      className="flex-1 p-4 h-full"
                     />
                     <div className="flex items-center space-x-2">
-                      <Button>Submit</Button>
+                      <Button>Enregistrer</Button>
                       <Button variant="secondary">
                         <span className="sr-only">Show history</span>
                         <CounterClockwiseClockIcon className="h-4 w-4" />
@@ -260,17 +252,17 @@ export default function DocPage() {
                     </div>
                   </div>
                 </TabsContent>
-                <TabsContent value="insert" className="mt-0 border-0 p-0">
-                  <div className="flex flex-col space-y-4">
+                <TabsContent value="insert" className="h-full mt-0 border-0 p-0">
+                  <div className="h-full flex flex-col space-y-4">
                     <div className="grid h-full grid-rows-2 gap-6 lg:grid-cols-2 lg:grid-rows-1">
                       <Textarea
                         placeholder="We're writing to [inset]. Congrats from OpenAI!"
-                        className="h-full min-h-[300px] lg:min-h-[700px] xl:min-h-[700px]"
+                        className="h-full"
                       />
                       <div className="rounded-md border bg-muted"></div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Button>Submit</Button>
+                      <Button>Enregistrer</Button>
                       <Button variant="secondary">
                         <span className="sr-only">Show history</span>
                         <CounterClockwiseClockIcon className="h-4 w-4" />
@@ -278,8 +270,8 @@ export default function DocPage() {
                     </div>
                   </div>
                 </TabsContent>
-                <TabsContent value="edit" className="mt-0 border-0 p-0">
-                  <div className="flex flex-col space-y-4">
+                <TabsContent value="edit" className="h-full mt-0 border-0 p-0">
+                  <div className="h-full flex flex-col space-y-4">
                     <div className="grid h-full gap-6 lg:grid-cols-2">
                       <div className="flex flex-col space-y-4">
                         <div className="flex flex-1 flex-col space-y-2">
@@ -287,7 +279,7 @@ export default function DocPage() {
                           <Textarea
                             id="input"
                             placeholder="We is going to the market."
-                            className="flex-1 lg:min-h-[580px]"
+                            className="flex-1 h-full"
                           />
                         </div>
                         <div className="flex flex-col space-y-2">
@@ -298,10 +290,10 @@ export default function DocPage() {
                           />
                         </div>
                       </div>
-                      <div className="mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[700px]" />
+                      <div className="mt-[21px] rounded-md border bg-muted h-full" />
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Button>Submit</Button>
+                      <Button>Enregistrer</Button>
                       <Button variant="secondary">
                         <span className="sr-only">Show history</span>
                         <CounterClockwiseClockIcon className="h-4 w-4" />

@@ -1,9 +1,23 @@
 import * as React from "react";
 import { labels, priorities, statuses } from "./data/data";
+import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Form,
   FormControl,
@@ -28,14 +42,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/use-toast";
 
 import { PlusIcon } from "lucide-react";
 import { api } from "@/services/api";
+import { User } from "@/hooks/useAuth";
 
 const FormSchema = z.object({
   status: z.string({
@@ -55,7 +68,17 @@ const FormSchema = z.object({
 });
 
 export function DataTableAddDialog() {
-  const [selectedLabel, setSelectedLabel] = React.useState(labels[0]);
+  const [users, setUsers] = React.useState<User[]>([]);
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
+
+  React.useEffect(() => {
+    async function fetchUsers() {
+      const { users } = await api.getAllUsers();
+      setUsers(users);
+    }
+    fetchUsers();
+  }, []);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -96,51 +119,6 @@ export function DataTableAddDialog() {
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
-              <div className="flex space-x-2">
-                <FormField
-                  control={form.control}
-                  name="label"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex space-x-2"
-                        >
-                          {labels.map((label) => (
-                            <FormItem key={label.value}>
-                              <FormControl>
-                                <RadioGroupItem
-                                  value={label.value}
-                                  className="hidden"
-                                />
-                              </FormControl>
-                              <FormLabel>
-                                <Badge
-                                  id="label"
-                                  className="cursor-pointer"
-                                  onClick={() => {
-                                    setSelectedLabel(label);
-                                  }}
-                                  variant={
-                                    label === selectedLabel
-                                      ? "default"
-                                      : "outline"
-                                  }
-                                >
-                                  {label.label}
-                                </Badge>
-                              </FormLabel>
-                            </FormItem>
-                          ))}
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
               <div className="grid gap-2">
                 <FormField
                   control={form.control}
@@ -233,6 +211,68 @@ export function DataTableAddDialog() {
                             ))}
                           </SelectContent>
                         </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="priority"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel htmlFor="user">Affectée à</FormLabel>
+                        <Popover open={open} onOpenChange={setOpen}>
+                          <FormControl>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                aria-expanded={open}
+                                className="w-[160px] justify-between"
+                              >
+                                {value
+                                  ? users.find(
+                                      (user) => user.username === value
+                                    )?.username
+                                  : "Sélectionner"}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </PopoverTrigger>
+                          </FormControl>
+                          <PopoverContent className="w-[160px] p-0">
+                            <Command>
+                              <CommandInput placeholder="Rechercher..." />
+                              <CommandEmpty>Aucun résultat.</CommandEmpty>
+                              <CommandGroup>
+                                {users.map((user) => (
+                                  <CommandItem
+                                    key={user._id}
+                                    onSelect={(currentValue) => {
+                                      setValue(
+                                        currentValue === value
+                                          ? ""
+                                          : currentValue
+                                      );
+                                      setOpen(false);
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        value === user.username
+                                          ? "opacity-100"
+                                          : "opacity-0"
+                                      )}
+                                    />
+                                    {user.username}
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
                         <FormMessage />
                       </FormItem>
                     )}
