@@ -15,7 +15,7 @@ const ChatContainer = ({ currentChat, socket }) => {
     const fetchMsg = async () => {
       await api
         .getMsg({
-          from: user.userId,
+          from: user._id,
           to: currentChat._id,
         })
         .then(({ messages }) => setMessages(messages));
@@ -25,12 +25,12 @@ const ChatContainer = ({ currentChat, socket }) => {
 
   const handleSendMsg = async (msg) => {
     socket.emit("send-msg", {
-      from: user.userId,
+      from: user._id,
       to: currentChat._id,
       msg,
     });
     await api.sendMsg({
-      from: user.userId,
+      from: user._id,
       to: currentChat._id,
       message: msg,
     });
@@ -78,7 +78,7 @@ const ChatContainer = ({ currentChat, socket }) => {
                 >
                   <div
                     className={cn("break-words p-2 rounded-xl text-sm", {
-                      "bg-gradient-to-br from-cyan-500 to-blue-600 text-white":
+                      "bg-gradient-to-br from-cyan-400 to-blue-500 text-white":
                         message.fromSelf,
                       "bg-gradient-to-br from-gray-50 to-gray-200":
                         !message.fromSelf,

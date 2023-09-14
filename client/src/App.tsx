@@ -1,5 +1,6 @@
 import "./App.css";
 import * as React from "react";
+import "@/services/PDFWorker";
 import {
   Navigate,
   Outlet,
@@ -7,6 +8,7 @@ import {
   createBrowserRouter,
   useLocation,
 } from "react-router-dom";
+
 import { Layout } from "./components/common/layout";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import Root from "./views/Root";
@@ -16,6 +18,9 @@ import MessagePage from "./views/Messages";
 import SettingsProfilePage from "./views/Settings";
 import DocPage from "./views/Docs";
 import AdminPage from "./views/Admin";
+import Card from "./views/Card";
+import { DataProvider } from "./hooks/useData";
+import Annotator from "./views/Annotator";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +53,10 @@ const router = createBrowserRouter([
         Component: DocPage,
       },
       {
+        path: "cards/:ref",
+        element: <Card />,
+      },
+      {
         path: "admin",
         Component: RequireAdmin,
         children: [
@@ -62,10 +71,10 @@ const router = createBrowserRouter([
 ]);
 
 function RequireAuth() {
-  const auth = useAuth();
+  const { isAuthenticated } = useAuth();
   const location = useLocation();
 
-  if (!auth.isAuthenticated) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   } else {
     return (
@@ -102,10 +111,12 @@ function RequireAdmin() {
 function App() {
   return (
     <AuthProvider>
-      <RouterProvider
-        router={router}
-        fallbackElement={<p>Initial Load...</p>}
-      />
+      <DataProvider>
+        <RouterProvider
+          router={router}
+          fallbackElement={<p>Initial Load...</p>}
+        />
+      </DataProvider>
     </AuthProvider>
   );
 }

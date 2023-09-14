@@ -10,7 +10,7 @@ export default function TaskPage() {
 
   React.useEffect(() => {
     const fetchTasks = async () => {
-      await api.getAllTasks().then((res) => setTasks(res.tasks));
+      api.getAllTasks().then((res) => setTasks(res.tasks));
     };
     fetchTasks();
   }, []);

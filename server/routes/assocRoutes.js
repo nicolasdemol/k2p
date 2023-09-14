@@ -5,7 +5,7 @@ const adminMiddleware = require("../middlewares/adminMiddleware");
 
 router.post("/add", adminMiddleware, assocController.addAssoc);
 router.delete("/:id", adminMiddleware, assocController.delAssoc);
-router.get("/get/:id", assocController.getAssocCards);
+router.get("/get/:ref", assocController.getAssocByRef);
 router.get("/get", assocController.getAllAssocs);
 
 module.exports = router;

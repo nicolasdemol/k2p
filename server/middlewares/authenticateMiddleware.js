@@ -6,7 +6,7 @@ const authenticateToken = (req, res, next) => {
   const token = req.headers.authorization;
 
   // Vérifier si la route est celle de connexion (login)
-  const isLoginRoute = req.path === "/api/users/login"; // Changez "/login" par votre chemin de connexion
+  const isLoginRoute = req.path === "/api/users/login" || "/api/docs/tmp"; // Changez "/login" par votre chemin de connexion
 
 
   if (!isLoginRoute && !token) {

@@ -16,7 +16,7 @@ export function usersEndpoints(axiosInstance: AxiosInstance) {
     },
     getAllUsers: async () => {
       try {
-        const response = await axiosInstance.get("/users/get");
+        const response = await axiosInstance.get(`/users`);
         return { users: response.data };
       } catch (error) {
         console.error(

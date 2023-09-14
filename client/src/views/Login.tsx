@@ -69,11 +69,11 @@ export default function Login() {
   }
 
   return (
-    <div className="h-[80vh] flex items-center">
+    <div className="h-[100vh] flex items-center">
       <Card className="z-10 w-[350px] mx-auto">
         <Form {...form}>
           <CardHeader>
-            <Logo className="w-1/2 mx-auto" />
+            <Logo className="w-40 mx-auto" />
             <CardDescription className="text-center">
               Connectez-vous à la plateforme.
             </CardDescription>
@@ -124,6 +124,11 @@ export default function Login() {
           </form>
         </Form>
       </Card>
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
+        <span className="text-sm text-slate-300">
+          Propulsé par <strong>D&C</strong>.
+        </span>
+      </div>
     </div>
   );
 }

@@ -5,20 +5,20 @@ export function assocsEndpoints(axiosInstance: AxiosInstance) {
     getAllAssocs: async () => {
       try {
         const response = await axiosInstance.get("/assocs/get");
-        return { assocs: response.data };
+        return response.data;
       } catch (error) {
         console.error("Error fetching assocs:", error);
         return { assocs: [] }; // Gérer l'erreur de manière appropriée
       }
     },
 
-    getAssoc: async (assocId) => {
+    getAssocByRef: async (ref: string | number) => {
       try {
-        const response = await axiosInstance.get(`/assocs/get/${assocId}`); // Utilisez l'ID pour faire une requête spécifique pour une association
-        return { assoc: response.data }; // Retourne l'association spécifique
+        const response = await axiosInstance.get(`/assocs/get/${ref}`);
+        return response.data;
       } catch (error) {
-        console.error(`Error fetching assoc with ID ${assocId}:`, error);
-        return { assoc: null }; // Gérer l'erreur de manière appropriée
+        console.error("Error fetching cards:", error);
+        throw error; // Gérer l'erreur de manière appropriée
       }
     },
   };

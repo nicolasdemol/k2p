@@ -1,0 +1,225 @@
+.annotator-container {
+  position: relative;
+  height: inherit;
+  max-height: inherit;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  .annotator-pages-container {
+    height: 100%;
+    overflow-y: auto;
+
+    .annotator-pages {
+      padding: 10px 0;
+    }
+  }
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .error-image {
+    width: 100px;
+    height: 100px;
+    padding: 20px;
+  }
+
+  .error-message {
+    color: white;
+  }
+}
+
+.mark-container {
+  opacity: 0.5;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+
+  .mark__token {
+    color: transparent;
+  }
+}
+
+.ocr-info-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+
+  .ocr-info__icon {
+    width: 20px;
+    height: 20px;
+    cursor: help;
+  }
+
+  .ocr-info__icon-rotate {
+    animation: rotate infinite 2s linear;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.token__text-item {
+  color: transparent;
+  &.annotatable {
+    padding: 1px;
+    border: 1px solid #bebebe;
+    border-radius: 5px;
+  }
+}
+
+.selection-container {
+  &.annotating-mode {
+    user-select: none;
+    cursor: crosshair;
+  }
+
+  &.text-selection-mode {
+    cursor: text;
+    &::-moz-selection {
+      background: rgba(0, 0, 255, 0.2);
+      color: transparent;
+    }
+    &::selection {
+      background: rgba(0, 0, 255, 0.2);
+      color: transparent;
+    }
+  }
+
+  &.normal-mode {
+    cursor: default;
+  }
+
+  .selection__rectangle {
+    opacity: 0.3;
+    border: 1px dashed #000;
+    position: absolute;
+  }
+}
+
+.tooltip-container {
+  position: relative;
+
+  &:hover {
+    .tooltip__text {
+      visibility: visible;
+    }
+  }
+
+  .tooltip__text {
+    visibility: hidden;
+    width: max-content;
+    max-width: 200px;
+    color: #fff;
+    background-color: #000;
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    top: 110%;
+    left: 0;
+    opacity: 0.65;
+  }
+}
+
+.page {
+  display: flex;
+  justify-content: safe center;
+
+  &:not(:last-child) {
+    padding-bottom: 40px;
+  }
+
+  .page__container {
+    position: relative;
+
+    .cursor-text {
+      z-index: 10;
+      color: white;
+      position: absolute;
+      border-radius: 4px;
+      padding: 4px 8px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .page__text-layer-container {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      line-height: 1.2;
+
+      .token-container {
+        position: absolute;
+        white-space: pre-wrap;
+        cursor: inherit;
+        transform-origin: 0 0;
+        padding: 0;
+      }
+    }
+
+    .area-annotation__container {
+      position: absolute;
+
+      .area-annotation__text-input {
+        padding: 6px 12px;
+        background-color: #ffffff;
+        border: 1px solid #e1e4e8;
+        border-radius: 2px;
+        width: calc(100% - 22px);
+        min-width: 100px;
+        margin-bottom: 2px;
+
+        &:focus {
+          outline: 0;
+          background-color: #fff;
+          box-shadow: 0 0 0 2px #e8f0f0;
+        }
+
+        &.hidden {
+          visibility: hidden;
+        }
+      }
+
+      .area-annotation__mark {
+        position: relative;
+        cursor: pointer;
+        background-color: transparent;
+
+        .area-annotation__toggle-icon {
+          position: absolute;
+          top: -12px;
+          left: -12px;
+          width: 16px;
+          height: 16px;
+          cursor: pointer;
+          background-color: #f7f7f7;
+          border-radius: 100%;
+          padding: 2px;
+          z-index: 1;
+          border: 1px solid rgba(0, 0, 0, 0.3);
+          opacity: 0.8;
+        }
+
+        span {
+          width: 100%;
+          height: 100%;
+          display: block;
+          opacity: 0.2;
+        }
+      }
+    }
+  }
+}

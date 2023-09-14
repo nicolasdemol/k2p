@@ -1,7 +1,7 @@
 import * as React from "react";
-import { labels, priorities, statuses } from "./data/data";
+import { priorities, statuses } from "./data/data";
 import { cn } from "@/lib/utils";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, Users2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -49,6 +49,7 @@ import { toast } from "@/components/ui/use-toast";
 import { PlusIcon } from "lucide-react";
 import { api } from "@/services/api";
 import { User } from "@/hooks/useAuth";
+import { Badge } from "../ui/badge";
 
 const FormSchema = z.object({
   status: z.string({
@@ -64,13 +65,12 @@ const FormSchema = z.object({
     .min(4, {
       message: "Votre titre doit contenir au moins 4 caractères.",
     }),
-  label: z.enum(["documentation", "panne", "feature"]),
 });
 
 export function DataTableAddDialog() {
   const [users, setUsers] = React.useState<User[]>([]);
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [selectedUsers, setSelectedUsers] = React.useState<User[]>([]);
 
   React.useEffect(() => {
     async function fetchUsers() {
@@ -84,27 +84,36 @@ export function DataTableAddDialog() {
     resolver: zodResolver(FormSchema),
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    api.addTask(data);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const taskData = {
+      ...data, // Copiez les autres champs
+      assignedTo: selectedUsers.map((user) => user._id), // Ajoutez les IDs des utilisateurs sélectionnés
+    };
+    await api.addTask(taskData);
     toast({
       title: "Les informations viennent d'être ajoutées.",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          <code className="text-white">
+            {JSON.stringify(taskData, null, 2)}
+          </code>
         </pre>
       ),
     });
+    setOpen(false);
   }
+
+  const addSelectedUser = (user: User) => {
+    if (!selectedUsers.includes(user)) {
+      setSelectedUsers([...selectedUsers, user]);
+    }
+  };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="secondary"
-          size="sm"
-          className="ml-auto hidden h-8 lg:flex"
-        >
-          <PlusIcon className="mr-2 h-4 w-4" />
+        <Button size="sm" className="ml-auto hidden h-8 lg:flex">
+          <PlusIcon className="mr-1 h-4 w-4" />
           Ajouter
         </Button>
       </DialogTrigger>
@@ -154,7 +163,7 @@ export function DataTableAddDialog() {
                           <FormControl>
                             <SelectTrigger
                               id="status"
-                              className="line-clamp-1 w-[160px] truncate"
+                              className="line-clamp-1 w-full truncate"
                             >
                               <SelectValue placeholder="Sélectionner" />
                             </SelectTrigger>
@@ -192,7 +201,7 @@ export function DataTableAddDialog() {
                           <FormControl>
                             <SelectTrigger
                               id="priority"
-                              className="line-clamp-1 w-[160px] truncate"
+                              className="line-clamp-1 w-full truncate"
                             >
                               <SelectValue placeholder="Sélectionner" />
                             </SelectTrigger>
@@ -216,72 +225,78 @@ export function DataTableAddDialog() {
                     )}
                   />
                 </div>
-                <div>
-                  <FormField
-                    control={form.control}
-                    name="priority"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel htmlFor="user">Affectée à</FormLabel>
-                        <Popover open={open} onOpenChange={setOpen}>
-                          <FormControl>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant="outline"
-                                role="combobox"
-                                aria-expanded={open}
-                                className="w-[160px] justify-between"
-                              >
-                                {value
-                                  ? users.find(
-                                      (user) => user.username === value
-                                    )?.username
-                                  : "Sélectionner"}
-                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                              </Button>
-                            </PopoverTrigger>
-                          </FormControl>
-                          <PopoverContent className="w-[160px] p-0">
-                            <Command>
-                              <CommandInput placeholder="Rechercher..." />
-                              <CommandEmpty>Aucun résultat.</CommandEmpty>
-                              <CommandGroup>
-                                {users.map((user) => (
-                                  <CommandItem
-                                    key={user._id}
-                                    onSelect={(currentValue) => {
-                                      setValue(
-                                        currentValue === value
-                                          ? ""
-                                          : currentValue
-                                      );
-                                      setOpen(false);
-                                    }}
-                                  >
-                                    <Check
-                                      className={cn(
-                                        "mr-2 h-4 w-4",
-                                        value === user.username
-                                          ? "opacity-100"
-                                          : "opacity-0"
-                                      )}
-                                    />
-                                    {user.username}
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </Command>
-                          </PopoverContent>
-                        </Popover>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+              </div>
+              <div className="grid pb-2">
+                <FormField
+                  control={form.control}
+                  name="selectedUsers"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="user">Assignée à</FormLabel>
+                      <Popover open={open} onOpenChange={setOpen}>
+                        <FormControl>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              aria-expanded={open}
+                              className="flex gap-2 justify-start w-full"
+                            >
+                              {selectedUsers.length ? (
+                                selectedUsers.map((user) => (
+                                  <Badge>{user.username}</Badge>
+                                ))
+                              ) : (
+                                <>
+                                  Ajouter des utilisateurs{" "}
+                                  <Users2 className="ml-auto h-4 w-4 text-muted-foreground" />
+                                </>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                        </FormControl>
+                        <PopoverContent className="w-[200px] p-0">
+                          <Command>
+                            <CommandInput placeholder="Rechercher..." />
+                            <CommandEmpty>Aucun résultat.</CommandEmpty>
+                            <CommandGroup>
+                              {users.map((user) => (
+                                <CommandItem
+                                  key={user._id}
+                                  onSelect={() => {
+                                    addSelectedUser(user);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      selectedUsers.includes(user)
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                  {user.username}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit">Appliquer</Button>
+              <Button
+                type="reset"
+                variant="ghost"
+                onClick={() => setSelectedUsers([])}
+              >
+                Réinitialiser
+              </Button>
+              <Button type="submit">Enregistrer</Button>
             </DialogFooter>
           </form>
         </Form>

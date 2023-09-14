@@ -7,6 +7,6 @@ router.post("/add", adminMiddleware, cardController.addCard);
 router.delete("/:id", adminMiddleware, cardController.removeCard);
 router.post("/many", adminMiddleware, cardController.addManyCards);
 router.get("/get", cardController.getAllCards);
-router.get("/get/:ref", cardController.getCardsByRef);
+router.get("/get/:ref", cardController.getCardByRef);
 
 module.exports = router;

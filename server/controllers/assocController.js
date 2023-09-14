@@ -27,13 +27,14 @@ const assocController = {
       });
     }
   },
-  getAssocCards: async (req, res) => {
+  getAssocByRef: async (req, res) => {
     try {
-      const { id } = req.params;
+      const { ref } = req.params;
 
+      const cardId = await Card.findOne({ ref: ref });
       // Recherchez l'association qui contient l'ID de la carte donnée
       const assoc = await Assoc.findOne({
-        $or: [{ aeb: id }, { cms: id }, { pcb: id }],
+        $or: [{ aeb: cardId }, { cms: cardId }, { pcb: cardId }],
       });
 
       if (!assoc) {

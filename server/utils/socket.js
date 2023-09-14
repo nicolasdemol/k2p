@@ -13,7 +13,7 @@ exports.socketConnection = (httpServer) => {
   io.on("connection", (socket) => {
     global.chatSocket = socket;
     socket.emit("online-users", Array.from(onlineUsers.keys()));
-    
+
     socket.on("add-user", (userId) => {
       onlineUsers.set(userId, socket.id);
     });

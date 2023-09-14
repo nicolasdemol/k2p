@@ -41,7 +41,7 @@ export function PresetSelector({ presets, ...props }: PresetSelectorProps) {
           aria-expanded={open}
           className="flex-1 justify-between md:max-w-[200px] lg:max-w-[300px]"
         >
-          {selectedPreset ? selectedPreset.name : "Load a preset..."}
+          {selectedPreset ? selectedPreset.name : "Charger un modèle..."}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

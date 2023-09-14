@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { User, useAuth } from "@/hooks/useAuth";
+import { api } from "@/services/api";
+import * as React from "react";
 import { IoAddOutline } from "react-icons/io5";
 
 const ROLE_NAME = [
@@ -6,34 +8,41 @@ const ROLE_NAME = [
   { value: "quality", label: "Qualité" },
   { value: "admin", label: "Administrateur" },
 ];
-const getRoleLabel = (value) => {
+const getRoleLabel = (value: string) => {
   const role = ROLE_NAME.find((role) => role.value === value);
   return role ? role.label : "Inconnu";
 };
 
-const Contacts = ({ contacts, changeChat }) => {
-  const [currentSelected, setCurrentSelected] = useState(undefined);
+const Contacts = ({ changeChat }) => {
+  const { user } = useAuth();
+  const [contacts, setContacts] = React.useState<User[]>([]);
+  const [currentSelected, setCurrentSelected] = React.useState(undefined);
 
-  const changeCurrentChat = (index, contact) => {
+  React.useEffect(() => {
+    const fetchAllUsers = async () => {
+      await api.getAllUsers().then((res) => {
+        setContacts(res.users);
+      });
+    };
+    if (user) {
+      fetchAllUsers();
+    }
+  }, [user]);
+
+  const changeCurrentChat = (index, contact: User) => {
     setCurrentSelected(index);
     changeChat(contact);
   };
 
   return (
-    <div
-      style={{ gridTemplateRows: "10% 90%" }}
-      className="grid border-r-2 shadow-xl border-gray-50 h-full rounded-r-xl"
-    >
-      <div className="flex items-center justify-between p-6">
-        <h2 className=" text-2xl font-semibold">Messages</h2>
-        <IoAddOutline
-          size={36}
-          className="p-1 hover:bg-gray-100 rounded-full cursor-pointer"
-        />
+    <div className="flex flex-col shadow-xl h-full rounded-r-xl overflow-hidden">
+      <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
+        <h2 className="text-lg font-semibold">Messages</h2>
       </div>
       <ul className="flex flex-col items-center divide-y divide-gray-200">
-        {contacts.map((contact, index) => {
-          return (
+        {contacts
+          .filter((contact) => contact._id !== user._id)
+          .map((contact, index) => (
             <li
               key={contact._id}
               className={`cursor-pointer px-6 py-4 flex w-full hover:bg-gray-50 ${
@@ -52,8 +61,7 @@ const Contacts = ({ contacts, changeChat }) => {
                 </div>
               </div>
             </li>
-          );
-        })}
+          ))}
       </ul>
     </div>
   );

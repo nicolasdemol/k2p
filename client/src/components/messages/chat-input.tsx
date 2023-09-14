@@ -26,6 +26,12 @@ const ChatInput = ({ handleSendMsg }) => {
     setMsg(content);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      sendChat(event);
+    }
+  };
+
   return (
     <form
       onSubmit={(event) => sendChat(event)}
@@ -41,9 +47,10 @@ const ChatInput = ({ handleSendMsg }) => {
           { [s.placeholder]: isPlaceholderVisible }
         )}
         onInput={handleContentChange}
+        onKeyDown={handleKeyDown}
       ></div>
 
-      <Button size="sm" variant="outline" type="submit">
+      <Button size="sm" variant="secondary" type="submit">
         <IoSendOutline className="mr-2" size={18} />
         Envoyer
       </Button>

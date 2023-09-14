@@ -4,6 +4,6 @@ const metricController = require("../controllers/metricController");
 
 router.get("/ca", metricController.getCA);
 router.get("/productivity", metricController.getProductivity);
-router.post("/add", metricController.addMetric);
+router.post("/", metricController.addMetric);
 
 module.exports = router;

@@ -86,7 +86,7 @@ const cardController = {
     }
   },
 
-  getCardsByRef: async (req, res) => {
+  getCardByRef: async (req, res) => {
     const { ref } = req.params;
     try {
       // Requête pour trouver toutes les cartes dont le numéro de référence commence par la chaîne saisie

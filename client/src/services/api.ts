@@ -1,5 +1,5 @@
 import axios from "axios";
-import SERVER_ADDRESS from "@/config";
+import { SERVER_ADDRESS } from "@/config";
 
 import { usersEndpoints } from "./endpoints/users";
 import { cardsEndpoints } from "./endpoints/cards";

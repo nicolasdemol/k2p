@@ -7,7 +7,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Overview } from "@/components/admin/overview";
+import { GraphCA } from "@/components/admin/graph-ca";
+import { GraphProductivity } from "@/components/admin/graph-productivity";
 import { ActiveUsers } from "@/components/admin/active-users";
 import { api } from "@/services/api";
 import { getYear } from "date-fns";
@@ -55,13 +56,11 @@ export default function AdminPage() {
   return (
     <>
       <div className="hidden flex-col md:flex">
-        <div className="flex-1 space-y-4 px-8 pt-6">
+        <div className=" space-y-4 px-8 pt-6">
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList>
               <TabsTrigger value="overview">Tableau de bord</TabsTrigger>
-              <TabsTrigger value="analytics" disabled>
-                Graphiques
-              </TabsTrigger>
+              <TabsTrigger value="analytics">Graphiques</TabsTrigger>
               <TabsTrigger value="reports" disabled>
                 Listes
               </TabsTrigger>
@@ -136,7 +135,8 @@ export default function AdminPage() {
                       € / h
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      {productivityPercentageChange.toFixed(2)}% de la semaine dernière
+                      {productivityPercentageChange.toFixed(2)}% de la semaine
+                      dernière
                     </p>
                   </CardContent>
                 </Card>
@@ -195,10 +195,10 @@ export default function AdminPage() {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="col-span-4">
                   <CardHeader>
-                    <CardTitle>Chiffre d'affaire par semaine</CardTitle>
+                    <CardTitle>Chiffre d'affaire (semaine)</CardTitle>
                   </CardHeader>
                   <CardContent className="pl-2">
-                    <Overview />
+                    <GraphCA />
                   </CardContent>
                 </Card>
                 <Card className="col-span-3">
@@ -210,6 +210,26 @@ export default function AdminPage() {
                   </CardHeader>
                   <CardContent>
                     <ActiveUsers />
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+            <TabsContent value="analytics" className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
+                <Card className="col-span-4">
+                  <CardHeader>
+                    <CardTitle>Chiffre d'affaire (semaine)</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pl-2">
+                    <GraphCA />
+                  </CardContent>
+                </Card>
+                <Card className="col-span-4">
+                  <CardHeader>
+                  <CardTitle>Productivité Atelier (semaine)</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pl-2">
+                    <GraphProductivity />
                   </CardContent>
                 </Card>
               </div>

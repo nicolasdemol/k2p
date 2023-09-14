@@ -56,7 +56,7 @@ const userController = {
       // Générer un jeton JWT
       const token = jwt.sign(
         {
-          userId: user._id,
+          _id: user._id,
           username: user.username,
           firstname: user.firstname,
           surname: user.surname,

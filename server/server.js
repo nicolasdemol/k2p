@@ -2,7 +2,9 @@ const express = require("express");
 const { createServer } = require("http");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const cron = require("node-cron");
 const { socketConnection } = require("./utils/socket");
+const { cleanTemp } = require("./utils/clean");
 
 const userRoutes = require("./routes/userRoutes");
 const cardRoutes = require("./routes/cardRoutes");
@@ -49,6 +51,12 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/metrics", metricRoutes);
+app.use("/api/tmp", express.static("./tmp"));
+
+// Planifiez la tâche de nettoyage tous les jours à 05h00
+cron.schedule("0 5 * * *", () => {
+  cleanTemp();
+});
 
 // Démarrer le serveur
 httpServer.listen(port, () => {

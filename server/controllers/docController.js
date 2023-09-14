@@ -1,5 +1,7 @@
+"use strict";
 const Client = require("ssh2-sftp-client");
 const fs = require("fs");
+const path = require("path");
 
 const config = {
   host: "vm-data",
@@ -9,36 +11,123 @@ const config = {
 };
 
 const docController = {
-  getDoc: async (req, res) => {
-    const { ref, type } = req.params;
-    const remotePath = "/D:/QUALITE/FICHE_INTRANET"; // This should be the mounted path on the remote server
+  listFiles: async (req, res) => {
+    const { remotePath } = req.body;
 
-    const conn = new Client();
+    const client = new Client();
 
     try {
-      await conn.connect(config);
-      const fileList = await conn.list(`${remotePath}/${type}`);
+      await client.connect(config);
 
-      // Rechercher le fichier qui contient le numéro de référence (ref)
-      const fileWithRef = fileList.find((file) => file.name.includes(ref));
+      // Fonction récursive pour obtenir la structure arborescente
+      const getDirectoryTree = async (directory) => {
+        const fileList = await client.list(directory);
 
-      if (fileWithRef) {
-        const remoteFilePath = `${remotePath}/${type}/${fileWithRef.name}`;
+        const filesAndDirs = [];
+        for (const file of fileList) {
+          if (file.type === "d") {
+            // Si c'est un répertoire, récursivement obtenir sa structure
+            const subDirectory = path.join(directory, file.name);
+            const subDirectoryTree = await getDirectoryTree(subDirectory);
+            filesAndDirs.push({
+              name: file.name,
+              type: "d",
+              children: subDirectoryTree,
+            });
+          } else {
+            filesAndDirs.push({ name: file.name, type: "f" });
+          }
+        }
 
-        // Lire le contenu du fichier
-        const fileContent = await conn.get(remoteFilePath);
+        return filesAndDirs;
+      };
 
-        // Envoyer le contenu du fichier au client
-        res.setHeader("Content-Type", "application/pdf");
-        res.end(fileContent);
-      } else {
-        res.status(404).send("File Not Found");
-      }
+      const directoryTree = await getDirectoryTree(remotePath);
+
+      res.status(200).json(directoryTree);
     } catch (err) {
-      console.error("Erreur lors de la récupération des fichiers :", err.message);
+      console.error(
+        "Erreur lors de la récupération de l'arborescence :",
+        err.message
+      );
       res.status(500).send("Internal Server Error");
     } finally {
-      conn.end();
+      client.end();
+    }
+  },
+  downloadDoc: async (req, res) => {
+    const { remotePath, localPath } = req.body;
+    const client = new Client();
+
+    try {
+      // Créez le répertoire local si il n'existe pas
+      const localDirectory = path.dirname(localPath);
+      if (!fs.existsSync(localDirectory)) {
+        fs.mkdirSync(localDirectory, { recursive: true });
+      }
+
+      await client.connect(config);
+      await client.fastGet(remotePath, localPath);
+
+      // Envoie une réponse avec un statut HTTP 200 en cas de succès
+      res.status(200).send("Téléchargement réussi");
+    } catch (err) {
+      console.error("Erreur lors du téléchargement du fichier :", err.message);
+
+      // Envoie une réponse avec un statut HTTP 500 en cas d'erreur
+      res.status(500).send("Erreur lors du téléchargement");
+    } finally {
+      await client.end();
+    }
+  },
+  downloadDoc: async (req, res) => {
+    const { remotePath, localPath } = req.body;
+    const client = new Client();
+
+    try {
+      // Créez le répertoire local si il n'existe pas
+      const localDirectory = path.dirname(localPath);
+      if (!fs.existsSync(localDirectory)) {
+        fs.mkdirSync(localDirectory, { recursive: true });
+      }
+
+      await client.connect(config);
+      await client.fastGet(remotePath, localPath);
+
+      // Envoie une réponse avec un statut HTTP 200 en cas de succès
+      res.status(200).send("Téléchargement réussi");
+    } catch (err) {
+      console.error("Erreur lors du téléchargement du fichier :", err.message);
+
+      // Envoie une réponse avec un statut HTTP 500 en cas d'erreur
+      res.status(500).send("Erreur lors du téléchargement");
+    } finally {
+      await client.end();
+    }
+  },
+  downloadDoc: async (req, res) => {
+    const { remotePath, localPath } = req.body;
+    const client = new Client();
+
+    try {
+      // Créez le répertoire local si il n'existe pas
+      const localDirectory = path.dirname(localPath);
+      if (!fs.existsSync(localDirectory)) {
+        fs.mkdirSync(localDirectory, { recursive: true });
+      }
+
+      await client.connect(config);
+      await client.fastGet(remotePath, localPath);
+
+      // Envoie une réponse avec un statut HTTP 200 en cas de succès
+      res.status(200).send("Téléchargement réussi");
+    } catch (err) {
+      console.error("Erreur lors du téléchargement du fichier :", err.message);
+
+      // Envoie une réponse avec un statut HTTP 500 en cas d'erreur
+      res.status(500).send("Erreur lors du téléchargement");
+    } finally {
+      await client.end();
     }
   },
 };

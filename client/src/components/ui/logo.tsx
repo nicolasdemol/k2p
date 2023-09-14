@@ -1,14 +1,21 @@
 import * as React from "react";
 
 import logo from "@/assets/logo.png";
-import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 const Logo: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({
-  className,
   ...props
-}) => (
-  <img src={logo} alt="logo k2 process" className={cn(className)} {...props} />
-);
+}) => {
+  const navigate = useNavigate();
+  return (
+    <img
+      onClick={() => navigate("/")}
+      src={logo}
+      alt="logo k2 process"
+      {...props}
+    />
+  );
+};
 
 Logo.displayName = "Logo";
 

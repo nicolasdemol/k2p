@@ -7,7 +7,7 @@ export function ActiveUsers() {
   const [users, setUsers] = React.useState<User[]>([]);
   React.useEffect(() => {
     async function fetchUsers() {
-      const { users } = await api.getAllUsers();
+      const { users } = api.getAllUsers();
       setUsers(users);
     }
     fetchUsers();

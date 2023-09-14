@@ -47,14 +47,15 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title="Titre" />
     ),
     cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.label);
-
       return (
         <div className="flex space-x-2">
-          {label && <Badge variant="outline">{label.label}</Badge>}
-          <span className="max-w-[500px] truncate font-medium">
+          <span className="max-w-[700px] truncate font-medium">
             {row.getValue("title")}
           </span>
+          {row.original.assignedTo &&
+            row.original.assignedTo.map((user) => (
+              <Badge variant="outline">{user.firstname}</Badge>
+            ))}
         </div>
       );
     },
