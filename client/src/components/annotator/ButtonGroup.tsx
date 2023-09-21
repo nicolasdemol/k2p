@@ -47,40 +47,41 @@ const ButtonGroup = ({ scale, setScale, rotation, setRotation }: Props) => {
           }}
         >
           {expand ? (
-            <PanelLeftOpen className="h-5 w-5  text-slate-800" />
+            <PanelLeftOpen className="h-5 w-5" />
           ) : (
-            <PanelLeftClose className="h-5 w-5  text-slate-800" />
+            <PanelLeftClose className="h-5 w-5" />
           )}
         </Button>
         <Toggle size="sm" onClick={toggleEntity}>
           {entity ? (
             <Highlighter
               color={entity.color}
-              className="h-5 w-5  text-slate-800"
+              className="mr-2 h-5 w-5"
             />
           ) : (
-            <Highlighter className="h-5 w-5  text-slate-800" />
+            <Highlighter className="mr-2 h-5 w-5" />
           )}
+          Modifier
         </Toggle>
       </div>
 
       <div className="space-x-1 flex items-center justify-center">
-        <span className="text-gray-700 text-sm font-bold bg-slate-100 py-2 px-3 rounded-md">
+        <span className="text-gray-700 text-sm font-semibold bg-slate-100 py-1 px-2 rounded-md">
           {Math.round(scale * 100)}%
         </span>
 
         <Button size="sm" variant="ghost" onClick={() => setScale(scale + 0.2)}>
-          <ZoomIn className="h-5 w-5  text-slate-800" />
+          <ZoomIn className="h-5 w-5" />
         </Button>
         <Button size="sm" variant="ghost" onClick={() => setScale(scale - 0.2)}>
-          <ZoomOut className="h-5 w-5 text-slate-800" />
+          <ZoomOut className="h-5 w-5" />
         </Button>
         <Button
           size="sm"
           variant="ghost"
           onClick={() => setRotation((rotation - 90) % 360)}
         >
-          <RotateCcw className="h-5 w-5  text-slate-800" />
+          <RotateCcw className="h-5 w-5" />
         </Button>
       </div>
       <h4 className="text-right font-semibold tracking-tight">{file.name}</h4>

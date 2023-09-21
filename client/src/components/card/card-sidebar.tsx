@@ -10,7 +10,7 @@ export const CardSidebar = ({ card, assoc }) => {
   const { expand } = useCardContext();
   return (
     card && (
-      <ScrollArea className={cn("border-r h-[calc(100vh-57px)] w-1/4")}>
+      <ScrollArea className={cn("border-r w-1/4")}>
         <div className="font-mono text-lg p-4 sticky top-0 bg-white drop-shadow-sm">
           {card.name} <strong className="text-[#1F51FF]">{card.ref}</strong>
         </div>

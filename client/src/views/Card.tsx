@@ -13,7 +13,7 @@ export default function CardPage() {
     assocs.find((assoc) => assoc.pcb.ref.toString() === ref);
   return (
     <CardProvider>
-      <div className="relative flex">
+      <div className="relative flex h-[calc(100vh-57px)]">
         <CardSidebar card={card} assoc={assoc} />
         <CardPdfViewer />
       </div>

@@ -123,7 +123,7 @@ const Annotator = forwardRef(
 
     return (
       <ConfigContext.Provider value={{ config }}>
-        <div className="annotator-container">
+        <div className="annotator-container" style={style}>
           <EntityContext.Provider value={{ entity, updateEntity }}>
             <ButtonGroup
               scale={scale}
@@ -131,7 +131,7 @@ const Annotator = forwardRef(
               rotation={rotation}
               setRotation={setRotation}
             />
-            <div className="annotator-pages-container" style={style}>
+            <div className="annotator-pages-container">
               {!pages && annotations && (
                 <div className="flex items-center justify-center w-full h-full">
                   <Loader2 className="mr-2 h-8 w-8 animate-spin" />

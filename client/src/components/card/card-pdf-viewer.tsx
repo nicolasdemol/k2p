@@ -94,7 +94,7 @@ export const CardPdfViewer = () => {
   return (
     <div
       className={cn(
-        "absolute left-1/4 h-[calc(100vh-57px)] w-3/4 z-30 transition-all ease-in-out",
+        "absolute left-1/4 w-3/4 z-30 transition-all ease-in-out h-full",
         {
           "w-full left-0 bg-white": expand,
         }
@@ -109,13 +109,13 @@ export const CardPdfViewer = () => {
         />
       )}
       {!fileExists && file.path && (
-        <div className="flex items-center w-full justify-center h-[calc(100vh-57px)]">
+        <div className="flex items-center w-full justify-center">
           <Loader2 className="mr-2 h-8 w-8 animate-spin" />
           <h1 className="text-xl tracking-tight lg:text-2xl">Importation...</h1>
         </div>
       )}
       {!file.path && (
-        <div className="flex flex-col items-center w-full justify-center h-[calc(100vh-57px)]">
+        <div className="flex flex-col items-center w-full justify-center h-full">
           <DownloadCloud className="w-6 h-6" />
           <h1 className="text-2xl font-bold tracking-tight">
             Charger un document
