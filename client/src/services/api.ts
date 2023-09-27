@@ -10,6 +10,7 @@ import { messagesEndpoints } from "./endpoints/messages";
 import { notificationsEndpoints } from "./endpoints/notifications";
 import { tasksEndpoints } from "./endpoints/tasks";
 import { metricsEndpoints } from "./endpoints/metrics";
+import { configsEndpoints } from "./endpoints/configs";
 
 const axiosInstance = axios.create({
   baseURL: `${SERVER_ADDRESS}/api`, // Remplacez par l'URL de votre serveur
@@ -40,6 +41,7 @@ const api = {
   ...notificationsEndpoints(axiosInstance),
   ...tasksEndpoints(axiosInstance),
   ...metricsEndpoints(axiosInstance),
+  ...configsEndpoints(axiosInstance),
   // Ajoutez d'autres entités si nécessaire
 };
 

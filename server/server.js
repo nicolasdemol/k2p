@@ -15,12 +15,13 @@ const messageRoutes = require("./routes/messageRoutes");
 const taskRoutes = require("./routes/taskRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const metricRoutes = require("./routes/metricRoutes");
+const configRoutes = require("./routes/configRoutes");
 
 const app = express();
 const httpServer = createServer(app);
 socketConnection(httpServer);
 
-const MONGO_ADDRESS = "localhost";
+const MONGO_ADDRESS = "192.168.10.29";
 const port = 4000;
 
 // Configuration de la connexion MongoDB
@@ -51,6 +52,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/metrics", metricRoutes);
+app.use("/api/configs", configRoutes);
 app.use("/api/tmp", express.static("./tmp"));
 
 // Planifiez la tâche de nettoyage tous les jours à 05h00

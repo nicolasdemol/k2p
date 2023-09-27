@@ -56,14 +56,12 @@ export function Search({ children, ...props }) {
       <div onClick={() => setOpen(true)}>{children}</div>
       <CommandDialog open={open} onOpenChange={setOpen} {...props}>
         <CommandInput
-          className="font-light"
           value={search}
           onValueChange={setSearch}
           placeholder="Rechercher un produit..."
         />
         {search && <CommandEmpty>Aucun résultat trouvé.</CommandEmpty>}
         <CommandGroup
-          className="font-light"
           heading="Teledyne Oldham Simtronics"
         >
           {filteredCards.slice(0, 8).map((card) => (

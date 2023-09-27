@@ -13,14 +13,14 @@ import { Layout } from "./components/common/layout";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import Root from "./views/Root";
 import Login from "@/views/Login";
-import TaskPage from "./views/Tasks";
 import MessagePage from "./views/Messages";
 import SettingsProfilePage from "./views/Settings";
 import DocPage from "./views/Docs";
 import AdminPage from "./views/Admin";
 import Card from "./views/Card";
 import { DataProvider } from "./hooks/useData";
-import Annotator from "./views/Annotator";
+import IssuePage from "./views/Issue";
+import { ConfigProvider } from "./hooks/useConfig";
 
 const router = createBrowserRouter([
   {
@@ -41,8 +41,8 @@ const router = createBrowserRouter([
         Component: SettingsProfilePage,
       },
       {
-        path: "tasks",
-        Component: TaskPage,
+        path: "issues",
+        Component: IssuePage,
       },
       {
         path: "messages",
@@ -110,14 +110,16 @@ function RequireAdmin() {
 
 function App() {
   return (
-    <AuthProvider>
-      <DataProvider>
-        <RouterProvider
-          router={router}
-          fallbackElement={<p>Initial Load...</p>}
-        />
-      </DataProvider>
-    </AuthProvider>
+    <ConfigProvider>
+      <AuthProvider>
+        <DataProvider>
+          <RouterProvider
+            router={router}
+            fallbackElement={<p>Initial Load...</p>}
+          />
+        </DataProvider>
+      </AuthProvider>
+    </ConfigProvider>
   );
 }
 

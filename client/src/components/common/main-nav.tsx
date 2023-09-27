@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Search } from "./search";
 import {
@@ -11,7 +11,6 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Logo } from "../ui/logo";
 
 export function MainNav({
   className,
@@ -21,9 +20,7 @@ export function MainNav({
   return (
     <nav {...props}>
       <NavigationMenu>
-        <NavigationMenuList
-          className={cn("flex items-center", className)}
-        >
+        <NavigationMenuList className={cn("flex items-center", className)}>
           <NavigationMenuItem>
             <div className="cursor-pointer">
               <Search>
@@ -39,32 +36,12 @@ export function MainNav({
           <NavigationMenuItem>
             <NavigationMenuTrigger>Production</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                <li className="row-span-3">
-                  <NavigationMenuLink asChild>
-                    <Link
-                      className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                      to="/"
-                    >
-                      <Logo />
-                      <div className="mb-2 mt-4 text-lg font-medium">
-                        Intranet
-                      </div>
-                      <p className="text-sm leading-tight text-muted-foreground">
-                        Système de communication et d'informations interne à
-                        l'entreprise.
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
-                </li>
-                <ListItem to="/tasks" title="Planning">
-                  Retrouver votre liste de tâches à réaliser.
+              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-1 lg:w-[400px] ">
+                <ListItem href="/issues" title="Historique des problèmes">
+                  Consulter l'historique des problèmes signalés.
                 </ListItem>
-                <ListItem to="/docs" title="Documents">
-                  Bientôt disponible
-                </ListItem>
-                <ListItem to="/docs" title="Pointage">
-                  Bientôt disponible
+                <ListItem href="/docs" title="Documents partagés">
+                  Rechercher rapidement un fichier spécifique.
                 </ListItem>
               </ul>
             </NavigationMenuContent>
@@ -83,27 +60,30 @@ export function MainNav({
   );
 }
 
-const ListItem = React.forwardRef(
-  ({ className, title, children, ...props }, ref) => {
-    return (
-      <div>
-        <NavigationMenuLink asChild>
-          <Link
-            ref={ref}
-            className={cn(
-              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-              className
-            )}
-            {...props}
-          >
-            <div className="text-sm font-medium leading-none">{title}</div>
-            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-              {children}
-            </p>
-          </Link>
-        </NavigationMenuLink>
-      </div>
-    );
-  }
-);
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, href, ...props }, ref) => {
+  const navigate = useNavigate();
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <div
+          onClick={() => navigate(href)}
+          ref={ref}
+          className={cn(
+            "block cursor-pointer select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </div>
+      </NavigationMenuLink>
+    </li>
+  );
+});
 ListItem.displayName = "ListItem";

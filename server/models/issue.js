@@ -1,11 +1,16 @@
 const mongoose = require("mongoose");
 
 const issueSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  cardId: { type: mongoose.Schema.Types.ObjectId, ref: "Card", required: true },
-  componentRef: { type: String, required: true },
-  quantity: { type: Number, required: true },
+  reportedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  title: { type: String, required: true },
   description: { type: String, required: true },
+  label: { type: String, required: true },
+  priority: { type: String, required: true },
+  status: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
 

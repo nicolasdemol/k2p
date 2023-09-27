@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const docController = require("../controllers/docController");
 
-router.post("/", docController.downloadDoc);
-router.post("/tree", docController.listFiles);
+router.get("/", docController.getDocs);
+router.get("/refresh", docController.refreshDocList);
 
 module.exports = router;

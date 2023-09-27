@@ -11,8 +11,10 @@ export const CardSidebar = ({ card, assoc }) => {
   return (
     card && (
       <ScrollArea className={cn("border-r w-1/4")}>
-        <div className="font-mono text-lg p-4 sticky top-0 bg-white drop-shadow-sm">
-          {card.name} <strong className="text-[#1F51FF]">{card.ref}</strong>
+        <div className="p-4 sticky grid gap-4 top-0 bg-white drop-shadow-sm">
+          <span className="font-mono text-lg">
+            {card.name} <strong className="text-[#1F51FF]">{card.ref}</strong>
+          </span>
         </div>
         <CardTableAssoc card={card} assoc={assoc} />
         <CardTableFiles data={files} defaultSearch={[card.ref]} />

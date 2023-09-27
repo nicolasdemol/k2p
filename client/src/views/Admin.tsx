@@ -1,17 +1,13 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GraphCA } from "@/components/admin/graph-ca";
-import { GraphProductivity } from "@/components/admin/graph-productivity";
 import { ActiveUsers } from "@/components/admin/active-users";
 import { api } from "@/services/api";
 import { getYear } from "date-fns";
+import { CreateAccount } from "@/components/admin/create-account";
+import { UpdateAssocs } from "@/components/admin/update-assocs";
+import { UpdateConfig } from "@/components/admin/update-config";
 
 interface CA {
   amount: number;
@@ -57,16 +53,10 @@ export default function AdminPage() {
     <>
       <div className="hidden flex-col md:flex">
         <div className=" space-y-4 px-8 pt-6">
-          <Tabs defaultValue="overview" className="space-y-4">
+          <Tabs defaultValue="configs" className="space-y-4">
             <TabsList>
-              <TabsTrigger value="overview">Tableau de bord</TabsTrigger>
-              <TabsTrigger value="analytics">Graphiques</TabsTrigger>
-              <TabsTrigger value="reports" disabled>
-                Listes
-              </TabsTrigger>
-              <TabsTrigger value="notifications" disabled>
-                Configurations
-              </TabsTrigger>
+              <TabsTrigger value="configs">Configurations</TabsTrigger>
+              <TabsTrigger value="overview">Statistiques</TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -201,37 +191,21 @@ export default function AdminPage() {
                     <GraphCA />
                   </CardContent>
                 </Card>
-                <Card className="col-span-3">
-                  <CardHeader>
-                    <CardTitle>Utilsateurs Actifs</CardTitle>
-                    <CardDescription>
-                      You made 265 sales this month.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <ActiveUsers />
-                  </CardContent>
-                </Card>
               </div>
             </TabsContent>
-            <TabsContent value="analytics" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
-                <Card className="col-span-4">
-                  <CardHeader>
-                    <CardTitle>Chiffre d'affaire (semaine)</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pl-2">
-                    <GraphCA />
-                  </CardContent>
-                </Card>
-                <Card className="col-span-4">
-                  <CardHeader>
-                  <CardTitle>Productivité Atelier (semaine)</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pl-2">
-                    <GraphProductivity />
-                  </CardContent>
-                </Card>
+            <TabsContent value="configs">
+              <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-9">
+                <div className="col-span-3">
+                  <CreateAccount />
+                </div>
+
+                <div className="col-span-3">
+                  <ActiveUsers />
+                </div>
+                <div className="grid col-span-3 gap-4">
+                  <UpdateAssocs />
+                  <UpdateConfig />
+                </div>
               </div>
             </TabsContent>
           </Tabs>

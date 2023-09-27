@@ -9,8 +9,8 @@ export default function CardPage() {
   const { cards, assocs } = useData();
   const card = cards.find((card) => card.ref.toString() === ref);
   const assoc =
-    assocs.find((assoc) => assoc.aeb.ref.toString() === ref) ||
-    assocs.find((assoc) => assoc.pcb.ref.toString() === ref);
+    assocs.find((assoc) => assoc.aeb.toString() === ref) ||
+    assocs.find((assoc) => assoc.pcb.toString() === ref);
   return (
     <CardProvider>
       <div className="relative flex h-[calc(100vh-57px)]">

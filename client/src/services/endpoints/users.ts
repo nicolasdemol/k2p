@@ -17,7 +17,7 @@ export function usersEndpoints(axiosInstance: AxiosInstance) {
     getAllUsers: async () => {
       try {
         const response = await axiosInstance.get(`/users`);
-        return { users: response.data };
+        return response.data;
       } catch (error) {
         console.error(
           "Erreur lors de la récupération des utilisateurs :",

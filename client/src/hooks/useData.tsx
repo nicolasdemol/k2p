@@ -1,18 +1,13 @@
 import { api } from "@/services/api";
 import * as React from "react";
+import { User } from "./useAuth";
 
-export interface FileItem {
+export interface Doc {
   name: string;
-  type: "f";
+  path: string;
+  type: "f" | "d";
+  children?: Doc[];
 }
-
-export interface FolderItem {
-  name: string;
-  type: "d";
-  children: (FileItem | FolderItem)[];
-}
-
-export type FileStructure = (FileItem | FolderItem)[];
 
 export interface Assoc {
   aeb: Card;
@@ -23,7 +18,8 @@ export interface Assoc {
 interface DataContextType {
   cards: Card[];
   assocs: Assoc[];
-  files: FileStructure;
+  docs: Doc[];
+  users: User[];
 }
 
 export interface Card {
@@ -38,10 +34,11 @@ export interface Card {
 const DataContext = React.createContext<DataContextType>(null!);
 
 function DataProvider({ children }: { children?: React.ReactNode }) {
+  const [users, setUsers] = React.useState([]);
   const [cards, setCards] = React.useState([]);
+  const [issues, setIssues] = React.useState([]);
   const [assocs, setAssocs] = React.useState([]);
-  const [files, setFiles] = React.useState([]);
-  const [loadingFiles, setLoadingFiles] = React.useState(false);
+  const [docs, setDocs] = React.useState([]);
 
   React.useEffect(() => {
     async function fetchCards() {
@@ -62,29 +59,33 @@ function DataProvider({ children }: { children?: React.ReactNode }) {
   }, [assocs]);
 
   React.useEffect(() => {
-    async function listfiles() {
-      // Vérifiez d'abord si les fichiers sont déjà en cache
-      const cachedFiles = localStorage.getItem("cachedFiles");
-
-      if (cachedFiles) {
-        setFiles(JSON.parse(cachedFiles));
-      } else {
-        // Si les fichiers ne sont pas en cache, effectuez la requête API
-        setLoadingFiles(true); // Définissez l'état de chargement sur true pendant le chargement
-        api.getFiles().then((res) => {
-          setFiles(res);
-          localStorage.setItem("cachedFiles", JSON.stringify(res)); // Mettez en cache les fichiers
-          setLoadingFiles(false); // Rétablissez l'état de chargement une fois terminé
-        });
-      }
+    async function fetchUsers() {
+      api.getAllUsers().then((res) => setUsers(res));
     }
-
-    if (files.length === 0 && !loadingFiles) {
-      listfiles();
+    if (users && users.length === 0) {
+      fetchUsers();
     }
-  }, [files, loadingFiles]);
+  }, [users]);
 
-  const values = { cards, assocs, files };
+  React.useEffect(() => {
+    const fetchIssues = async () => {
+      api.getAllIssues().then((res) => setIssues(res));
+    };
+    if (issues && issues.length === 0) {
+      fetchIssues();
+    }
+  }, [issues]);
+
+  React.useEffect(() => {
+    const fetchDocs = async () => {
+      api.getDocs().then((res) => setDocs(res));
+    };
+    if (docs && docs.length === 0) {
+      fetchDocs();
+    }
+  }, [docs]);
+
+  const values = { cards, assocs, docs, users, issues };
 
   return (
     // 2. Utilisez le contexte pour fournir les données et les fonctions aux enfants.

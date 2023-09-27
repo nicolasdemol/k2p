@@ -8,9 +8,11 @@ import {
   PanelLeftOpen,
   ZoomIn,
   ZoomOut,
+  AlertCircle,
 } from "lucide-react";
 import EntityContext from "@/context/entityContext";
 import { Toggle } from "../ui/toggle";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Props {
   scale: number;
@@ -22,6 +24,7 @@ interface Props {
 const ButtonGroup = ({ scale, setScale, rotation, setRotation }: Props) => {
   const { expand, setExpand, file } = useCardContext();
   const { entity, updateEntity } = React.useContext(EntityContext);
+  const navigate = useNavigate();
 
   const toggleEntity = () => {
     if (entity === undefined) {
@@ -52,12 +55,20 @@ const ButtonGroup = ({ scale, setScale, rotation, setRotation }: Props) => {
             <PanelLeftClose className="h-5 w-5" />
           )}
         </Button>
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() =>
+            navigate("/issues", {
+              state: { open: true, label: "doc", title: `${file.name}` },
+            })
+          }
+        >
+          <AlertCircle className="h-5 w-5" />
+        </Button>
         <Toggle size="sm" onClick={toggleEntity}>
           {entity ? (
-            <Highlighter
-              color={entity.color}
-              className="mr-2 h-5 w-5"
-            />
+            <Highlighter color={entity.color} className="mr-2 h-5 w-5" />
           ) : (
             <Highlighter className="mr-2 h-5 w-5" />
           )}
