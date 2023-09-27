@@ -20,7 +20,6 @@ import AdminPage from "./views/Admin";
 import Card from "./views/Card";
 import { DataProvider } from "./hooks/useData";
 import IssuePage from "./views/Issue";
-import { ConfigProvider } from "./hooks/useConfig";
 
 const router = createBrowserRouter([
   {
@@ -110,16 +109,14 @@ function RequireAdmin() {
 
 function App() {
   return (
-    <ConfigProvider>
-      <AuthProvider>
-        <DataProvider>
-          <RouterProvider
-            router={router}
-            fallbackElement={<p>Initial Load...</p>}
-          />
-        </DataProvider>
-      </AuthProvider>
-    </ConfigProvider>
+    <AuthProvider>
+      <DataProvider>
+        <RouterProvider
+          router={router}
+          fallbackElement={<p>Initial Load...</p>}
+        />
+      </DataProvider>
+    </AuthProvider>
   );
 }
 

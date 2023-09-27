@@ -8,7 +8,6 @@ export function assocsEndpoints(axiosInstance: AxiosInstance) {
         return response.data;
       } catch (error) {
         console.error("Error fetching assocs:", error);
-        return { assocs: [] }; // Gérer l'erreur de manière appropriée
       }
     },
     updateAssocs: async (newAssocs) => {

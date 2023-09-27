@@ -66,7 +66,7 @@ const FormSchema = z.object({
 export function DataTableReport() {
   const { state } = useLocation();
   const { user } = useAuth();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(state?.open || false);
   const [openStatus, setOpenStatus] = React.useState(false);
   const [openLabel, setOpenLabel] = React.useState(false);
   const [openPriority, setOpenPriority] = React.useState(false);
@@ -97,7 +97,6 @@ export function DataTableReport() {
     <Dialog
       open={open}
       onOpenChange={setOpen}
-      defaultOpen={state?.open || false}
     >
       <DialogTrigger asChild>
         <Button variant="secondary" size="sm" className="h-8">

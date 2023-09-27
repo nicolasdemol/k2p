@@ -21,11 +21,13 @@ const app = express();
 const httpServer = createServer(app);
 socketConnection(httpServer);
 
-const MONGO_ADDRESS = "192.168.10.29";
+const SERVER_IP = "localhost";
 const port = 4000;
 
 // Configuration de la connexion MongoDB
-const mongoURI = `mongodb://${MONGO_ADDRESS}:27017/k2p`;
+const mongoURI =
+  "mongodb+srv://nyax2:nWUB1Oaf9lzikQms@cluster0.d2nbu8r.mongodb.net/k2p?retryWrites=true&w=majority";
+// const mongoURI = `mongodb://${SERVER_IP}:27017/k2p`;
 
 mongoose
   .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })

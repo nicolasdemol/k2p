@@ -52,7 +52,7 @@ export default function AdminPage() {
   return (
     <>
       <div className="hidden flex-col md:flex">
-        <div className=" space-y-4 px-8 pt-6">
+        <div className="space-y-4 px-8 pt-6">
           <Tabs defaultValue="configs" className="space-y-4">
             <TabsList>
               <TabsTrigger value="configs">Configurations</TabsTrigger>

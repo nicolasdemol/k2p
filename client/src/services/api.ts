@@ -8,7 +8,6 @@ import { assocsEndpoints } from "./endpoints/assocs";
 import { docsEndpoints } from "./endpoints/docs";
 import { messagesEndpoints } from "./endpoints/messages";
 import { notificationsEndpoints } from "./endpoints/notifications";
-import { tasksEndpoints } from "./endpoints/tasks";
 import { metricsEndpoints } from "./endpoints/metrics";
 import { configsEndpoints } from "./endpoints/configs";
 
@@ -39,7 +38,6 @@ const api = {
   ...docsEndpoints(axiosInstance),
   ...messagesEndpoints(axiosInstance),
   ...notificationsEndpoints(axiosInstance),
-  ...tasksEndpoints(axiosInstance),
   ...metricsEndpoints(axiosInstance),
   ...configsEndpoints(axiosInstance),
   // Ajoutez d'autres entités si nécessaire

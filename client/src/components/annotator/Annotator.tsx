@@ -24,8 +24,12 @@ import useAnnotationUpdater from "@/hooks/useAnnotationUpdater";
 import "./style.scss";
 import useEntity from "@/hooks/useEntity";
 import { Loader2 } from "lucide-react";
+import { Doc } from "@/interfaces/doc";
 
 interface Props {
+  doc: Doc;
+  fullScreen: boolean;
+  setFullScreen: (fullScreen: boolean) => void;
   config?: Config;
   url?: string;
   data?: Uint8Array | BufferSource | string;
@@ -42,6 +46,9 @@ const Annotator = forwardRef(
   (
     {
       config = {},
+      doc,
+      fullScreen,
+      setFullScreen,
       url,
       data,
       initialScale = 1.4,
@@ -126,6 +133,9 @@ const Annotator = forwardRef(
         <div className="annotator-container" style={style}>
           <EntityContext.Provider value={{ entity, updateEntity }}>
             <ButtonGroup
+              fullScreen={fullScreen}
+              setFullScreen={setFullScreen}
+              doc={doc}
               scale={scale}
               setScale={setScale}
               rotation={rotation}

@@ -4,7 +4,7 @@ import { Logo } from "@/components/ui/logo";
 
 const NavBar = () => {
   return (
-    <div className="border-b sticky top-0 bg-white z-50">
+    <div className="sticky top-0 bg-white z-50">
       <div className="flex h-14 items-center px-4">
         <Logo className="w-24 cursor-pointer" />
         <MainNav className="ml-4" />

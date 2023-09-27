@@ -1,13 +1,8 @@
 import { api } from "@/services/api";
 import * as React from "react";
-import { User } from "./useAuth";
-
-export interface Doc {
-  name: string;
-  path: string;
-  type: "f" | "d";
-  children?: Doc[];
-}
+import { Doc } from "@/interfaces/doc";
+import { Issue } from "@/interfaces/issue";
+import { User } from "@/interfaces/user";
 
 export interface Assoc {
   aeb: Card;
@@ -16,10 +11,17 @@ export interface Assoc {
 }
 
 interface DataContextType {
+  users: User[];
   cards: Card[];
+  issues: Issue[];
   assocs: Assoc[];
   docs: Doc[];
-  users: User[];
+  configs: Config[];
+}
+
+export interface Config {
+  remotePath: string;
+  localPath: string;
 }
 
 export interface Card {
@@ -34,11 +36,12 @@ export interface Card {
 const DataContext = React.createContext<DataContextType>(null!);
 
 function DataProvider({ children }: { children?: React.ReactNode }) {
-  const [users, setUsers] = React.useState([]);
-  const [cards, setCards] = React.useState([]);
-  const [issues, setIssues] = React.useState([]);
-  const [assocs, setAssocs] = React.useState([]);
-  const [docs, setDocs] = React.useState([]);
+  const [users, setUsers] = React.useState<User[]>([]);
+  const [cards, setCards] = React.useState<Card[]>([]);
+  const [issues, setIssues] = React.useState<Issue[]>([]);
+  const [assocs, setAssocs] = React.useState<Assoc[]>([]);
+  const [docs, setDocs] = React.useState<Doc[]>([]);
+  const [configs, setConfigs] = React.useState<Config[]>([]);
 
   React.useEffect(() => {
     async function fetchCards() {
@@ -78,14 +81,21 @@ function DataProvider({ children }: { children?: React.ReactNode }) {
 
   React.useEffect(() => {
     const fetchDocs = async () => {
-      api.getDocs().then((res) => setDocs(res));
+      api.getDocList().then((res) => setDocs(res));
     };
     if (docs && docs.length === 0) {
       fetchDocs();
     }
   }, [docs]);
 
-  const values = { cards, assocs, docs, users, issues };
+  React.useEffect(() => {
+    const fetchConfig = () => api.getConfig().then((res) => setConfigs(res));
+    if (configs && configs.length === 0) {
+      fetchConfig();
+    }
+  }, [configs]);
+
+  const values = { cards, assocs, docs, users, issues, configs };
 
   return (
     // 2. Utilisez le contexte pour fournir les données et les fonctions aux enfants.

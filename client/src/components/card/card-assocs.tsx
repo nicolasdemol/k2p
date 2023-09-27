@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronsUpDown } from "lucide-react";
 import { useData } from "@/hooks/useData";
 
-export function CardTableAssoc({ assoc, card }) {
+export function CardAssocs({ assoc, card }) {
   const { cards } = useData();
   const [isOpen, setIsOpen] = React.useState(true);
   const navigate = useNavigate();

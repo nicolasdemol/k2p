@@ -2,12 +2,16 @@
   position: relative;
   height: inherit;
   max-height: inherit;
+  max-width: inherit;
   box-sizing: border-box;
   overflow: hidden;
+  
 
   .annotator-pages-container {
     height: 100%;
+    width: 100%;
     overflow-y: auto;
+    background-color: #ffffff;
 
     .annotator-pages {
       padding: 10px 0;

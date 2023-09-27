@@ -12,7 +12,28 @@ const config = {
 };
 
 const docController = {
-  getDocs: async (req, res) => {},
+  getDocs: async (req, res) => {
+    try {
+      // Lire le contenu du fichier cacheDocs.json
+      const cacheDocsPath = path.join("./cache/cacheDocs.json"); // Remplacez par le chemin complet de votre fichier
+      const cacheDocsContent = await fs.promises.readFile(
+        cacheDocsPath,
+        "utf-8"
+      );
+
+      // Convertir le contenu JSON en objet JavaScript
+      const cacheDocs = JSON.parse(cacheDocsContent);
+
+      // Envoyer l'objet JavaScript en tant que réponse JSON
+      res.status(200).json(cacheDocs);
+    } catch (err) {
+      console.error(
+        "Erreur lors de la récupération des données :",
+        err.message
+      );
+      res.status(500).send("Internal Server Error");
+    }
+  },
   refreshDocList: async (req, res) => {
     const client = new Client();
     try {
@@ -54,22 +75,25 @@ const docController = {
       client.end();
     }
   },
-  downloadDoc: async (req, res) => {
-    const { remotePath, localPath } = req.body;
+  buildDocUrl: async (req, res) => {
+    const { doc } = req.body;
     const client = new Client();
-
     try {
-      // Créez le répertoire local si il n'existe pas
-      const localDirectory = path.dirname(localPath);
-      if (!fs.existsSync(localDirectory)) {
-        fs.mkdirSync(localDirectory, { recursive: true });
+      const configDoc = await Config.findOne();
+      const { remotePath, localPath } = configDoc;
+
+      if (!fs.existsSync(localPath)) {
+        fs.mkdirSync(localPath, { recursive: true });
       }
 
-      await client.connect(config);
-      await client.fastGet(remotePath, localPath);
-
+      if (!fs.existsSync(localPath + doc.path)) {
+        await client.connect(config);
+        await client.fastGet(remotePath + doc.path, localPath);
+      }
       // Envoie une réponse avec un statut HTTP 200 en cas de succès
-      res.status(200).send("Téléchargement réussi");
+      res
+        .status(200)
+        .json({ url: `http://localhost:4000/api/${localPath}/${doc.path}` });
     } catch (err) {
       console.error("Erreur lors du téléchargement du fichier :", err.message);
 

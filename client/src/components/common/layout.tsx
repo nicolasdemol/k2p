@@ -5,7 +5,9 @@ const Layout = ({ children }: { children?: React.ReactNode }) => {
   return (
     <>
       <NavBar />
-      <main>{children}</main>
+      <main className="relative h-[calc(100vh-57px)]">
+        {children}
+      </main>
       <Toaster />
     </>
   );

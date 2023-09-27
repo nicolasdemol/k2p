@@ -1,8 +1,9 @@
+import { Doc } from "@/interfaces/doc";
 import { AxiosInstance } from "axios";
 
 export function docsEndpoints(axiosInstance: AxiosInstance) {
   return {
-    getDocs: async () => {
+    getDocList: async () => {
       try {
         const response = await axiosInstance.get("/docs");
         return response.data;
@@ -16,6 +17,16 @@ export function docsEndpoints(axiosInstance: AxiosInstance) {
         return response.data;
       } catch (error) {
         console.error("Error refresh doc list:", error);
+      }
+    },
+    buildDocUrl: async (doc: Doc) => {
+      try {
+        const response = await axiosInstance.post("/docs", { doc: doc });
+        return response.data;
+      } catch (error) {
+        console.error(
+          "L'url du document recherché n'a pas pu être correctement crée."
+        );
       }
     },
   };

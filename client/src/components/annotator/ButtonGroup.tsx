@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useCardContext } from "../card/context";
 import { Button } from "../ui/button";
 import {
   RotateCcw,
@@ -10,46 +9,40 @@ import {
   ZoomOut,
   AlertCircle,
 } from "lucide-react";
-import EntityContext from "@/context/entityContext";
 import { Toggle } from "../ui/toggle";
 import { Link, useNavigate } from "react-router-dom";
+import { Doc } from "@/interfaces/doc";
 
 interface Props {
+  doc: Doc;
   scale: number;
   setScale: (scale: number) => void;
   rotation: number;
   setRotation: (scale: number) => void;
 }
 
-const ButtonGroup = ({ scale, setScale, rotation, setRotation }: Props) => {
-  const { expand, setExpand, file } = useCardContext();
-  const { entity, updateEntity } = React.useContext(EntityContext);
+const ButtonGroup = ({
+  doc,
+  fullScreen,
+  setFullScreen,
+  scale,
+  setScale,
+  rotation,
+  setRotation,
+}: Props) => {
   const navigate = useNavigate();
 
-  const toggleEntity = () => {
-    if (entity === undefined) {
-      updateEntity({
-        id: 0,
-        name: "Texte",
-        color: "#1F51FF",
-        entityType: "AREA",
-      });
-    } else {
-      updateEntity(undefined);
-    }
-  };
-
   return (
-    <div className="grid grid-cols-3 items-center px-4 py-1 bg-white border-b">
+    <div className="grid rounded-md grid-cols-3 items-center px-4 py-1 bg-white border-b">
       <div className="space-x-1 flex items-center">
         <Button
           size="sm"
           variant="ghost"
           onClick={() => {
-            setExpand(!expand);
+            setFullScreen(!fullScreen);
           }}
         >
-          {expand ? (
+          {fullScreen ? (
             <PanelLeftOpen className="h-5 w-5" />
           ) : (
             <PanelLeftClose className="h-5 w-5" />
@@ -60,19 +53,14 @@ const ButtonGroup = ({ scale, setScale, rotation, setRotation }: Props) => {
           variant="ghost"
           onClick={() =>
             navigate("/issues", {
-              state: { open: true, label: "doc", title: `${file.name}` },
+              state: { open: true, label: "doc", title: `${doc.name}` },
             })
           }
         >
           <AlertCircle className="h-5 w-5" />
         </Button>
-        <Toggle size="sm" onClick={toggleEntity}>
-          {entity ? (
-            <Highlighter color={entity.color} className="mr-2 h-5 w-5" />
-          ) : (
-            <Highlighter className="mr-2 h-5 w-5" />
-          )}
-          Modifier
+        <Toggle size="sm">
+          <Highlighter className="h-5 w-5" />
         </Toggle>
       </div>
 
@@ -95,7 +83,7 @@ const ButtonGroup = ({ scale, setScale, rotation, setRotation }: Props) => {
           <RotateCcw className="h-5 w-5" />
         </Button>
       </div>
-      <h4 className="text-right font-semibold tracking-tight">{file.name}</h4>
+      <h4 className="text-right font-semibold tracking-tight">{doc.name}</h4>
     </div>
   );
 };

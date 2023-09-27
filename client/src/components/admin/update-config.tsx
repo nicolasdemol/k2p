@@ -9,15 +9,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "../ui/input";
-import { useConfig } from "@/hooks/useConfig";
 import { Loader2 } from "lucide-react";
 import { api } from "@/services/api";
+import { useData } from "@/hooks/useData";
 
 export function UpdateConfig() {
-  const { config } = useConfig();
+  const { configs } = useData();
   const [loading, setLoading] = React.useState(false);
   const [remotePath, setRemotePath] = React.useState(
-    config && config[0]?.remotePath
+    configs && configs[0]?.remotePath
   );
 
   const handleRefreshDocList = () => {
@@ -43,7 +43,7 @@ export function UpdateConfig() {
           />
           <Button
             className="flex-shrink-0"
-            disabled={remotePath === config[0]?.remotePath}
+            disabled={remotePath === configs[0]?.remotePath}
           >
             Mettre à jour
           </Button>
