@@ -21,6 +21,7 @@ import {
 import { PDFMetaData } from "@/interfaces/pdf";
 import useKeyPressedListener from "@/hooks/useKeyPressedListener";
 import { useEntity } from "@/hooks/useEntity";
+import SelectionInput from "./SelectionInput";
 
 interface Props {
   pageNumber: number;

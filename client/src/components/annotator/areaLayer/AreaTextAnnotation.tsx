@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { Annotation } from "@/interfaces/annotation";
+import { Input } from "@/components/ui/input";
 
 interface Props {
   showInput: boolean;
@@ -34,10 +35,8 @@ const AreaTextAnnotation = ({
   };
 
   return (
-    <input
-      className={`area-annotation__text-input ${
-        showInput ? "" : "hidden"
-      }`.trim()}
+    <Input
+      className="focus-visible:ring-0 border-0 focus-visible:ring-white"
       type="text"
       value={value}
       onChange={handleChange}

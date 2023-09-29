@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Card } from "../ui/card";
 import { Entity } from "@/interfaces/entity";
 import { Button } from "../ui/button";
 import { useEntity } from "@/hooks/useEntity";
@@ -35,7 +34,7 @@ export function CardDocEntities({ handleEnter, handleLeave }) {
   };
 
   return (
-    <Card className="w-full flex justify-between items-center px-8 border-dashed border-x-0 border-t-0">
+    <div className="w-full flex justify-between items-center px-8">
       <div className="h-10 flex space-x-2 items-center">
         {entities.map((entity, index) => (
           <div
@@ -59,11 +58,10 @@ export function CardDocEntities({ handleEnter, handleLeave }) {
           </div>
         ))}
       </div>
-      {entity && (
-        <span className="text-slate-900 text-sm font-semibold bg-slate-100 py-1 px-2 rounded-md">
-          Édition
-        </span>
-      )}
-    </Card>
+
+      <span className="text-slate-900 text-sm font-semibold bg-slate-100 py-1 px-2 rounded-md">
+        {entity ? "Édition" : "Lecture"}
+      </span>
+    </div>
   );
 }

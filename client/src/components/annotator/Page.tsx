@@ -9,6 +9,7 @@ import Selection from "./Selection";
 import AreaLayer from "./areaLayer/AreaLayer";
 import AnnotationContext from "@/context/annotationContext";
 import { cn } from "@/lib/utils";
+import AreaTextAnnotation from "./areaLayer/AreaTextAnnotation";
 
 interface Props {
   pageNumber: number;

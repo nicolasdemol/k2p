@@ -33,39 +33,37 @@ export function ActiveUsers() {
           Modifier un utilisateur, changer les permissions des utilisateurs.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-8">
-          {users &&
-            users.map((user) => (
-              <div key={user._id} className="flex justify-between items-center">
-                <div className="flex">
-                  <Avatar className="h-9 w-9">
-                    <AvatarFallback>
-                      {user.firstname && user.firstname[0] + user.surname[0]}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="ml-4 space-y-1">
-                    <p className="text-sm font-medium leading-none">
-                      {user.firstname + " " + user.surname}
-                    </p>
-                    <p className="text-sm text-muted-foreground">{user.role}</p>
-                  </div>
-                </div>
-                <div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setDeleteUser(user)}
-                  >
-                    <UserMinus className="h-5 w-5" />
-                  </Button>
+      <CardContent className="space-y-8">
+        {users &&
+          users.map((user) => (
+            <div key={user._id} className="flex justify-between items-center">
+              <div className="flex">
+                <Avatar className="h-9 w-9">
+                  <AvatarFallback>
+                    {user.firstname && user.firstname[0] + user.surname[0]}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="ml-4 space-y-1">
+                  <p className="text-sm font-medium leading-none">
+                    {user.firstname + " " + user.surname}
+                  </p>
+                  <p className="text-sm text-muted-foreground">{user.role}</p>
                 </div>
               </div>
-            ))}
-          {deleteUser && (
-            <AlertDeleteUser setDeleteUser={setDeleteUser} user={deleteUser} />
-          )}
-        </div>
+              <div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setDeleteUser(user)}
+                >
+                  <UserMinus className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        {deleteUser && (
+          <AlertDeleteUser setDeleteUser={setDeleteUser} user={deleteUser} />
+        )}
       </CardContent>
     </Card>
   );

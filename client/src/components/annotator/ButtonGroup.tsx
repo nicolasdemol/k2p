@@ -37,7 +37,7 @@ const ButtonGroup = ({
   const navigate = useNavigate();
 
   return (
-    <div className="grid rounded-md grid-cols-3 items-center px-4 py-1 bg-white border-b border-dashed">
+    <div className="grid grid-cols-3 items-center px-4 py-1">
       <div className="space-x-1 flex items-center">
         <Button
           size="sm"
@@ -72,7 +72,7 @@ const ButtonGroup = ({
       </div>
 
       <div className="space-x-1 flex items-center justify-center">
-        <span className="text-slate-900 text-sm font-semibold bg-slate-100 py-1 px-2 rounded-md">
+        <span className="text-slate-900 text-sm font-semibold bg-slate-100 py-1 px-3 rounded-md">
           {Math.round(scale * 100)}%
         </span>
 

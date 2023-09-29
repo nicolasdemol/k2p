@@ -8,6 +8,7 @@ import { getYear } from "date-fns";
 import { CreateAccount } from "@/components/admin/create-account";
 import { UpdateAssocs } from "@/components/admin/update-assocs";
 import { UpdateConfig } from "@/components/admin/update-config";
+import { UpdateCards } from "@/components/admin/update-cards";
 
 interface CA {
   amount: number;
@@ -56,6 +57,7 @@ export default function AdminPage() {
           <Tabs defaultValue="configs" className="space-y-4">
             <TabsList>
               <TabsTrigger value="configs">Configurations</TabsTrigger>
+              <TabsTrigger value="data">Données</TabsTrigger>
               <TabsTrigger value="overview">Statistiques</TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
@@ -193,17 +195,19 @@ export default function AdminPage() {
                 </Card>
               </div>
             </TabsContent>
-            <TabsContent value="configs">
-              <div className="flex md:flex-col lg:flex-row gap-4 w-full h-full">
-                <div className="flex gap-4 flex-1">
-                  <CreateAccount />
-
-                  <ActiveUsers />
-                </div>
-                <div className="flex flex-col gap-4">
-                  <UpdateAssocs />
+            <TabsContent className="grid gap-4" value="configs">
+              <div className="grid grid-cols-3 gap-4">
+                <CreateAccount />
+                <ActiveUsers />
+                <div className="grid gap-4">
                   <UpdateConfig />
                 </div>
+              </div>
+            </TabsContent>
+            <TabsContent className="grid gap-4 pb-16" value="data">
+              <div className="grid grid-cols-2 gap-4">
+                <UpdateCards />
+                <UpdateAssocs />
               </div>
             </TabsContent>
           </Tabs>

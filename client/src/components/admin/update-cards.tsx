@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
+  Card as Cardd,
   CardContent,
   CardDescription,
   CardFooter,
@@ -14,27 +14,22 @@ import { useData } from "@/hooks/useData";
 import Editor from "@monaco-editor/react";
 import { api } from "@/services/api";
 import { toast } from "../ui/use-toast";
-import { Assoc } from "@/interfaces/assoc";
 import { cn } from "@/lib/utils";
+import { Card } from "@/interfaces/card";
 import { Loader2 } from "lucide-react";
 
-export function UpdateAssocs() {
-  const { assocs } = useData();
+export function UpdateCards() {
+  const { cards } = useData();
   const [validJSON, setValidJSON] = React.useState(true);
 
-  const assocsWithoutId = assocs.map((object) => {
-    const { aeb, pcb } = object;
-    return { aeb, pcb };
-  });
+  const cardsWithoutId = cards.map(({ _id, __v, createdAt, ...rest }) => rest);
 
-  const [newAssocsWithoutId, setNewAssocsWithoutId] = React.useState<Assoc[]>(
-    []
-  );
+  const [newCardsWithoutId, setNewCardsWithoutId] = React.useState<Card[]>([]);
 
-  const handleUpdateAssocs = (newAssocs: Assoc[]) => {
+  const handleUpdateCards = (newCards: Card[]) => {
     if (validJSON) {
       api
-        .updateAssocs(newAssocs)
+        .updateAssocs(newCards)
         .then((data) => {
           toast({
             title: `Associations mise à jour.`,
@@ -60,11 +55,11 @@ export function UpdateAssocs() {
     }
   };
   return (
-    <Card className="h-full">
+    <Cardd className="h-full">
       <CardHeader>
-        <CardTitle>Gérer les associations</CardTitle>
+        <CardTitle>Gérer les cartes</CardTitle>
         <CardDescription>
-          Permet de modifier la liste des associations entre chaque carte.
+          Permet de modifier la liste des cartes.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -74,7 +69,6 @@ export function UpdateAssocs() {
           })}
           height="46vh"
           defaultLanguage="json"
-          defaultValue={JSON.stringify(assocsWithoutId, null, 2)}
           loading={
             <div className="flex items-center justify-center w-full h-full">
               <Loader2 className="mr-2 h-8 w-8 animate-spin" />
@@ -83,17 +77,18 @@ export function UpdateAssocs() {
               </h1>
             </div>
           }
+          defaultValue={JSON.stringify(cardsWithoutId, null, 2)}
           onChange={(value: string | undefined) => {
             if (value) {
               try {
-                const parsedValue = JSON.parse(value) as Assoc[];
-                setNewAssocsWithoutId(parsedValue);
+                const parsedValue = JSON.parse(value) as Card[];
+                setNewCardsWithoutId(parsedValue);
                 setValidJSON(true);
               } catch (error) {
                 setValidJSON(false);
               }
             } else {
-              setNewAssocsWithoutId([]);
+              setNewCardsWithoutId([]);
             }
           }}
         />
@@ -101,12 +96,12 @@ export function UpdateAssocs() {
       <CardFooter className="justify-end">
         <Button
           size="sm"
-          onClick={() => handleUpdateAssocs(newAssocsWithoutId)}
-          disabled={!newAssocsWithoutId.length}
+          onClick={() => handleUpdateCards(newCardsWithoutId)}
+          disabled={!newCardsWithoutId.length}
         >
           Mettre à jour
         </Button>
       </CardFooter>
-    </Card>
+    </Cardd>
   );
 }

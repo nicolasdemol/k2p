@@ -45,7 +45,7 @@ export function UpdateConfig() {
   };
 
   return (
-    <Card>
+    <Card className="h-fit">
       <CardHeader>
         <CardTitle>Configurer les documents</CardTitle>
         <CardDescription>

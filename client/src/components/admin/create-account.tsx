@@ -111,8 +111,8 @@ export function CreateAccount() {
   }
 
   return (
-    <Form {...form}>
-      <Card className="h-full">
+    <Card className="h-full">
+      <Form {...form}>
         <CardHeader>
           <CardTitle>Créer un nouveau compte</CardTitle>
           <CardDescription>
@@ -243,7 +243,7 @@ export function CreateAccount() {
             </Button>
           </form>
         </CardFooter>
-      </Card>
-    </Form>
+      </Form>
+    </Card>
   );
 }

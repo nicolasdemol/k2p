@@ -145,7 +145,7 @@ export const CardDocViewer = ({
   const style = React.useMemo(() => {
     if (entity) {
       return {
-        border: `1px dashed ${entity.color}`,
+        border: `1px solid ${entity.color}`,
       };
     }
     return {};
@@ -153,21 +153,29 @@ export const CardDocViewer = ({
 
   return (
     <Card
-      className="w-[50vw] flex-1 h-full overflow-hidden border-dashed"
+      className="w-full flex-1 h-full overflow-hidden !relative"
       style={style}
     >
       {doc?.name ? (
-        <div className="h-full">
-          <ButtonGroup
-            setEditMode={setEditMode}
-            fullScreen={fullScreen}
-            setFullScreen={setFullScreen}
-            doc={doc}
-            scale={scale}
-            setScale={setScale}
-            rotation={rotation}
-            setRotation={setRotation}
-          />
+        <>
+          <div className="absolute inset-0 z-20 bg-white/80 backdrop-blur w-full h-fit">
+            <ButtonGroup
+              setEditMode={setEditMode}
+              fullScreen={fullScreen}
+              setFullScreen={setFullScreen}
+              doc={doc}
+              scale={scale}
+              setScale={setScale}
+              rotation={rotation}
+              setRotation={setRotation}
+            />
+            {!loading && editMode && (
+              <CardDocEntities
+                handleEnter={handleEnter}
+                handleLeave={handleLeave}
+              />
+            )}
+          </div>
           {loading ? (
             <div className="flex items-center w-full justify-center h-full">
               <Loader2 className="mr-2 h-8 w-8 animate-spin" />
@@ -177,12 +185,6 @@ export const CardDocViewer = ({
             </div>
           ) : (
             <>
-              {editMode && (
-                <CardDocEntities
-                  handleEnter={handleEnter}
-                  handleLeave={handleLeave}
-                />
-              )}
               <Annotator
                 scale={scale}
                 rotation={rotation}
@@ -194,7 +196,7 @@ export const CardDocViewer = ({
               />
             </>
           )}
-        </div>
+        </>
       ) : (
         <div className="flex flex-col items-center w-full justify-center h-full">
           <DownloadCloud className="w-6 h-6" />
