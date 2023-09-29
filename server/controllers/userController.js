@@ -6,7 +6,7 @@ const User = require("../models/user");
 const userController = {
   signup: async (req, res) => {
     try {
-      const { username, password, firstname, surname, role } = req.body;
+      const { firstname, surname, username, password, role } = req.body;
 
       // Vérifier si l'utilisateur existe déjà dans la base de données
       const existingUser = await User.findOne({ username });
@@ -69,6 +69,20 @@ const userController = {
     } catch (error) {
       console.error("Erreur lors de la connexion", error);
       res.status(500).json({ message: "Erreur lors de la connexion" });
+    }
+  },
+
+  removeUser: async (req, res) => {
+    const { id } = req.params;
+    try {
+      const users = await User.findByIdAndRemove(id); // Exclure le champ "password" des résultats
+
+      res.status(200).json(users);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des utilisateurs", error);
+      res
+        .status(500)
+        .json({ message: "Erreur lors de la récupération des utilisateurs." });
     }
   },
 

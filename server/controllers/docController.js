@@ -64,13 +64,17 @@ const docController = {
       };
       const directoryTree = await getDirectoryTree(remotePath);
 
-      res.status(200).json(directoryTree);
+      fs.writeFileSync("./cache/cacheDocs.json", JSON.stringify(directoryTree));
+
+      res.status(200).json({ message: "Actualisation des documents réussis." });
     } catch (err) {
       console.error(
-        "Erreur lors de la récupération de l'arborescence :",
+        "Erreur lors de l'actualisation des documents.",
         err.message
       );
-      res.status(500).send("Internal Server Error");
+      res
+        .status(500)
+        .json({ message: "Erreur lors de l'actualisation des documents." });
     } finally {
       client.end();
     }
@@ -82,21 +86,20 @@ const docController = {
       const configDoc = await Config.findOne();
       const { remotePath, localPath } = configDoc;
 
-      if (!fs.existsSync(localPath)) {
-        fs.mkdirSync(localPath, { recursive: true });
-      }
+      const remoteDoc = remotePath + doc.path;
+      const localDoc = path.join(localPath, doc.path);
+      const localDirectory = path.dirname(localDoc);
 
       if (!fs.existsSync(localPath + doc.path)) {
+        fs.mkdirSync(localDirectory, { recursive: true });
         await client.connect(config);
-        await client.fastGet(remotePath + doc.path, localPath);
+        await client.fastGet(remoteDoc, localDoc);
       }
       // Envoie une réponse avec un statut HTTP 200 en cas de succès
-      res
-        .status(200)
-        .json({ url: `http://localhost:4000/api/${localPath}/${doc.path}` });
+      res.status(200).json({
+        url: `http://localhost:4000/api/tmp///${doc.path}`,
+      });
     } catch (err) {
-      console.error("Erreur lors du téléchargement du fichier :", err.message);
-
       // Envoie une réponse avec un statut HTTP 500 en cas d'erreur
       res.status(500).send("Erreur lors du téléchargement");
     } finally {

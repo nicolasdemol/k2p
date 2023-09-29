@@ -17,19 +17,16 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ArrowLeft, ChevronLeft, File, Folder } from "lucide-react";
+import { ChevronLeft, File, Folder } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
-import { FileStructure } from "@/hooks/useData";
-import { useCardContext } from "./card-context";
 import { Skeleton } from "../ui/skeleton";
 import { Button } from "../ui/button";
+import { Doc } from "@/interfaces/doc";
 
 interface CardFileExplorerProps {
-  data: FileStructure;
+  data: Doc[];
   defaultSearch: string[] | number[];
 }
 
@@ -45,7 +42,7 @@ export function FileExplorer({ data }: CardFileExplorerProps) {
   };
 
   const handleGoBack = () => {
-    setCurrentFolder(null);
+    setCurrentFolder(currentFolder.slice(0, -1));
     setCurrentPath(currentPath.slice(0, -1)); // Retirer le dernier élément du chemin actuel pour remonter d'un niveau
   };
 

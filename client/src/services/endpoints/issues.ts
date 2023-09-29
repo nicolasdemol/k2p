@@ -1,3 +1,4 @@
+import { Issue } from "@/interfaces/issue";
 import { AxiosInstance } from "axios";
 
 export function issuesEndpoints(axiosInstance: AxiosInstance) {
@@ -12,7 +13,7 @@ export function issuesEndpoints(axiosInstance: AxiosInstance) {
       }
     },
 
-    addIssue: async (issueData) => {
+    addIssue: async (issueData: Issue) => {
       try {
         const response = await axiosInstance.post("/issues", issueData);
         return response.data;
@@ -22,7 +23,7 @@ export function issuesEndpoints(axiosInstance: AxiosInstance) {
       }
     },
 
-    deleteIssueById: async (issueId) => {
+    deleteIssueById: async (issueId: string) => {
       try {
         const response = await axiosInstance.delete(
           `/issues/${issueId}`

@@ -12,8 +12,10 @@ export interface Assoc {
 
 interface DataContextType {
   users: User[];
+  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
   cards: Card[];
   issues: Issue[];
+  setIssues: React.Dispatch<React.SetStateAction<Issue[]>>;
   assocs: Assoc[];
   docs: Doc[];
   configs: Config[];
@@ -95,7 +97,16 @@ function DataProvider({ children }: { children?: React.ReactNode }) {
     }
   }, [configs]);
 
-  const values = { cards, assocs, docs, users, issues, configs };
+  const values = {
+    cards,
+    assocs,
+    docs,
+    users,
+    setUsers,
+    issues,
+    setIssues,
+    configs,
+  };
 
   return (
     // 2. Utilisez le contexte pour fournir les données et les fonctions aux enfants.

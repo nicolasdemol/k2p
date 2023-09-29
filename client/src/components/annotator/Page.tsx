@@ -49,7 +49,7 @@ const Page = ({
   const [loading, setLoading] = useState(true);
   const [pdfPage, setPdfPage] = useState<PDFPageProxy | null>(null);
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
-  const [pageViewport, setPageViewport] = useState<any>({
+  const [pageViewport, setPageViewport] = useState({
     width: (916 / 1.5) * scale,
     height: (1174 / 1.5) * scale,
   });

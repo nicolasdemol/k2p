@@ -1,8 +1,10 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Annotation } from "@/interfaces/annotation";
 import AreaTextAnnotation from "./AreaTextAnnotation";
 import { recalculateBoundingBox } from "@/helpers/pdfHelpers";
 import AreaAnnotationToggle from "./AreaAnnotationToggle";
+import { Rectangle } from "tesseract.js";
+import { PDFMetaData } from "@/interfaces/pdf";
 
 interface Props {
   pdfScale: number;
@@ -25,9 +27,9 @@ const AreaMark = ({
     areaAnnotation: {
       boundingBox: bb,
       pdfInformation: { scale },
-    },
+    } = { boundingBox: {} as Rectangle, pdfInformation: {} as PDFMetaData }, // Fournir des valeurs par défaut pour éviter les erreurs de type
   } = annotation;
-
+  
   const boundingBox = useMemo(
     () => recalculateBoundingBox(bb, scale, pdfScale),
     [bb, scale, pdfScale]

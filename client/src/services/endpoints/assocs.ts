@@ -1,3 +1,4 @@
+import { Assoc } from "@/interfaces/assoc";
 import { AxiosInstance } from "axios";
 
 export function assocsEndpoints(axiosInstance: AxiosInstance) {
@@ -10,7 +11,7 @@ export function assocsEndpoints(axiosInstance: AxiosInstance) {
         console.error("Error fetching assocs:", error);
       }
     },
-    updateAssocs: async (newAssocs) => {
+    updateAssocs: async (newAssocs: Assoc[]) => {
       try {
         const response = await axiosInstance.post("/assocs", newAssocs, {
           headers: {

@@ -5,8 +5,8 @@ import { generateRandomHash } from "../helpers/hashHelper";
 
 const useAnnotations = (
   defaultAnnotations: Array<Annotation>,
-  readonly: boolean,
-  shouldUpdateDefaultAnnotations: boolean
+  readonly: boolean | undefined,
+  shouldUpdateDefaultAnnotations: boolean | undefined
 ) => {
   const [annotations, setAnnotations] = useState<Array<Annotation>>([]);
   const [lastActionHash, setLastActionHash] = useState<string>("");
@@ -90,18 +90,19 @@ const useAnnotations = (
               nerAnnotation: {
                 ...x.nerAnnotation,
                 tokens: [
-                  ...x.nerAnnotation.tokens,
-                  ...annotation.nerAnnotation.tokens,
+                  ...(x.nerAnnotation?.tokens || []), // Utilisation de l'opérateur de sécurité de navigation
+                  ...(annotation.nerAnnotation?.tokens || []), // Utilisation de l'opérateur de sécurité de navigation
                 ],
                 textIds: [
-                  ...x.nerAnnotation.textIds,
-                  ...annotation.nerAnnotation.textIds,
+                  ...(x.nerAnnotation?.textIds || []), // Utilisation de l'opérateur de sécurité de navigation
+                  ...(annotation.nerAnnotation?.textIds || []), // Utilisation de l'opérateur de sécurité de navigation
                 ],
               },
             };
           }
           return x;
         });
+
         setAnnotations(updatedAnnotations);
       } else {
         addAnnotation(annotation);

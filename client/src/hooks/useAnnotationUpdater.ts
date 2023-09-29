@@ -4,7 +4,7 @@ import { Annotation } from '@/interfaces/annotation';
 const useAnnotationUpdater = (
 	actionHash: string,
 	annotations: Array<Annotation>,
-	readonly: boolean,
+	readonly: boolean | undefined,
 	updateAnnotationsParent: (annotations: Array<Annotation>) => void,
 ) => {
 	const lastResolvedHash = useRef<string>('');

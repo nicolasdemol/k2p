@@ -1,4 +1,3 @@
-import React from 'react';
 import eye from '@/assets/icons/eye.svg';
 import eyeSlash from '@/assets/icons/eye-slash.svg';
 

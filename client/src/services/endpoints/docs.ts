@@ -17,6 +17,7 @@ export function docsEndpoints(axiosInstance: AxiosInstance) {
         return response.data;
       } catch (error) {
         console.error("Error refresh doc list:", error);
+        throw error
       }
     },
     buildDocUrl: async (doc: Doc) => {
@@ -27,6 +28,7 @@ export function docsEndpoints(axiosInstance: AxiosInstance) {
         console.error(
           "L'url du document recherché n'a pas pu être correctement crée."
         );
+        throw error;
       }
     },
   };

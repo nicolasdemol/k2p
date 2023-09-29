@@ -14,6 +14,7 @@ import { useData } from "@/hooks/useData";
 import Editor from "@monaco-editor/react";
 import { api } from "@/services/api";
 import { toast } from "../ui/use-toast";
+import { Assoc } from "@/interfaces/assoc";
 
 export function UpdateAssocs() {
   const { assocs } = useData();
@@ -23,13 +24,11 @@ export function UpdateAssocs() {
     return { aeb, pcb };
   });
 
-  const [newAssocsWithoutId, setNewAssocsWithoutId] = React.useState([]);
+  const [newAssocsWithoutId, setNewAssocsWithoutId] = React.useState<Assoc[]>(
+    []
+  );
 
-  function handleEditorChange(value, event) {
-    setNewAssocsWithoutId(value);
-  }
-
-  const handleUpdateAssocs = (newAssocs) => {
+  const handleUpdateAssocs = (newAssocs: Assoc[]) => {
     api
       .updateAssocs(newAssocs)
       .then((data) => {
@@ -62,7 +61,19 @@ export function UpdateAssocs() {
           height="20vh"
           defaultLanguage="json"
           defaultValue={JSON.stringify(assocsWithoutId, null, 2)}
-          onChange={handleEditorChange}
+          onChange={(value: string | undefined) => {
+            if (value) {
+              try {
+                const parsedValue = JSON.parse(value) as Assoc[];
+                setNewAssocsWithoutId(parsedValue);
+              } catch (error) {
+                console.error("Erreur lors de la conversion JSON :", error);
+                // Gérer l'erreur ici si la conversion échoue
+              }
+            } else {
+              setNewAssocsWithoutId([]);
+            }
+          }}
         />
       </CardContent>
       <CardFooter className="justify-end">

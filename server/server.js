@@ -21,13 +21,13 @@ const app = express();
 const httpServer = createServer(app);
 socketConnection(httpServer);
 
-const SERVER_IP = "localhost";
+const SERVER_IP = "192.168.10.29";
 const port = 4000;
 
 // Configuration de la connexion MongoDB
-const mongoURI =
-  "mongodb+srv://nyax2:nWUB1Oaf9lzikQms@cluster0.d2nbu8r.mongodb.net/k2p?retryWrites=true&w=majority";
-// const mongoURI = `mongodb://${SERVER_IP}:27017/k2p`;
+// const mongoURI =
+// "mongodb+srv://nyax2:nWUB1Oaf9lzikQms@cluster0.d2nbu8r.mongodb.net/k2p?retryWrites=true&w=majority";
+const mongoURI = `mongodb://${SERVER_IP}:27017/k2p`;
 
 mongoose
   .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -55,7 +55,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/metrics", metricRoutes);
 app.use("/api/configs", configRoutes);
-app.use("/api/tmp", express.static("./tmp"));
+app.use("/api/tmp", express.static("tmp"));
 
 // Planifiez la tâche de nettoyage tous les jours à 05h00
 cron.schedule("0 5 * * *", () => {

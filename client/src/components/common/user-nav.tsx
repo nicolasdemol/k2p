@@ -11,18 +11,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
-import { IoChatbubblesOutline } from "react-icons/io5";
+import { Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function UserNav() {
   const { user, logOut } = useAuth();
   return (
     <>
-      <Button variant="link" className="w-10 h-10 rounded-full">
-        <Link to="/messages">
-          <IoChatbubblesOutline className="h-6 w-6" />
-        </Link>
-      </Button>
+      <Link to="/messages">
+        <Button variant="ghost" size="sm">
+          <Mail className="mr-2 h-5 w-5" />
+          Messages
+        </Button>
+      </Link>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">

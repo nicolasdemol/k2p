@@ -1,17 +1,20 @@
 import { FileExplorer } from "@/components/common/file-explorer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useData } from "@/hooks/useData";
+import { Folders } from "lucide-react";
 
 export default function DocPage() {
-  const { files } = useData();
+  const { docs } = useData();
   return (
-    <div className="flex justify-center items-center h-[calc(100vh-70px)]">
-      <Card className="w-[800px] overflow-hidden">
+    <div className="flex justify-center items-center h-full">
+      <Card className=" max-w-5xl w-full overflow-hidden">
         <CardHeader className="border-b">
-          <CardTitle>Documents</CardTitle>
+          <CardTitle className="inline-flex items-center text-xl">
+            <Folders className="mr-2 h-6 w-6" /> Documents partagés
+          </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
-          <FileExplorer data={files} defaultSearch={[]} />
+          <FileExplorer data={docs} defaultSearch={[]} />
         </CardContent>
       </Card>
     </div>

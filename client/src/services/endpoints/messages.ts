@@ -1,8 +1,9 @@
+import { Message } from "@/interfaces/message";
 import { AxiosInstance } from "axios";
 
 export function messagesEndpoints(axiosInstance: AxiosInstance) {
   return {
-    getMsg: async (msgData) => {
+    getMsg: async (msgData: Message) => {
       try {
         const response = await axiosInstance.post("/messages/get", msgData);
         return { messages: response.data };
@@ -12,7 +13,7 @@ export function messagesEndpoints(axiosInstance: AxiosInstance) {
       }
     },
     
-    sendMsg: async (msgData) => {
+    sendMsg: async (msgData: Message) => {
       try {
         const response = await axiosInstance.post("/messages/send", msgData);
         return response.data;

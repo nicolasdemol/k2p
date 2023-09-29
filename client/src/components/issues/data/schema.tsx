@@ -3,11 +3,9 @@ import { z } from "zod";
 export const userSchema = z.object({
   _id: z.string(),
   username: z.string(),
-  password: z.string(),
   firstname: z.string(),
   surname: z.string(),
   role: z.string(),
-  created_at: z.string(),
 });
 
 // We're keeping a simple non-relational schema here.

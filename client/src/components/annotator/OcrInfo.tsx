@@ -1,4 +1,3 @@
-import React from 'react';
 import arrowRepeat from '@/assets/icons/arrow-repeat.svg';
 import exclamationCircle from '@/assets/icons/exclamation-circle.svg';
 import checkCircle from '@/assets/icons/check-circle.svg';

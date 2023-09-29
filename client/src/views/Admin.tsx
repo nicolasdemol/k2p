@@ -194,15 +194,13 @@ export default function AdminPage() {
               </div>
             </TabsContent>
             <TabsContent value="configs">
-              <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-9">
-                <div className="col-span-3">
+              <div className="flex md:flex-col lg:flex-row gap-4 w-full h-full">
+                <div className="flex gap-4 flex-1">
                   <CreateAccount />
-                </div>
 
-                <div className="col-span-3">
                   <ActiveUsers />
                 </div>
-                <div className="grid col-span-3 gap-4">
+                <div className="flex flex-col gap-4">
                   <UpdateAssocs />
                   <UpdateConfig />
                 </div>

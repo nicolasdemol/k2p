@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import AreaMark from './AreaMark';
 import AnnotationContext from '@/context/annotationContext';
 

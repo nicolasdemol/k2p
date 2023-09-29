@@ -1,3 +1,5 @@
+import * as React from "react";
+import socket from "@/services/socket";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useData } from "@/hooks/useData";
 import {
@@ -8,12 +10,23 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
-import { UserCog, UserMinus } from "lucide-react";
+import { UserMinus } from "lucide-react";
+import { AlertDeleteUser } from "./alert-delete-user";
+import { User } from "@/interfaces/user";
 
 export function ActiveUsers() {
-  const { users } = useData();
+  const { users, setUsers } = useData();
+  const [deleteUser, setDeleteUser] = React.useState<User | null>(null);
+
+  React.useEffect(() => {
+    // Mise à jour en temps réel du nouvel utilisateur
+    socket.on("new_user", (newUser) => {
+      console.log(newUser);
+    });
+  }, [setUsers]);
+
   return (
-    <Card className="h-full">
+    <Card className="h-full" id="sidebar-content">
       <CardHeader>
         <CardTitle>Gérer les utilisateurs</CardTitle>
         <CardDescription>
@@ -39,15 +52,19 @@ export function ActiveUsers() {
                   </div>
                 </div>
                 <div>
-                  <Button variant="ghost" size="icon">
-                    <UserCog className="h-5 w-5" />
-                  </Button>
-                  <Button variant="ghost" size="icon">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setDeleteUser(user)}
+                  >
                     <UserMinus className="h-5 w-5" />
                   </Button>
                 </div>
               </div>
             ))}
+          {deleteUser && (
+            <AlertDeleteUser setDeleteUser={setDeleteUser} user={deleteUser} />
+          )}
         </div>
       </CardContent>
     </Card>

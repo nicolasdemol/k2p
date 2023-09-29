@@ -11,6 +11,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { Folders, History } from "lucide-react";
 
 export function MainNav({
   className,
@@ -37,10 +38,11 @@ export function MainNav({
             <NavigationMenuTrigger>Production</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-1 lg:w-[400px] ">
-                <ListItem href="/issues" title="Historique des problèmes">
+                <ListItem href="/issues" icon={<History className="mr-1 h-5 w-5" />} title="Historique des problèmes">
+                  
                   Consulter l'historique des problèmes signalés.
                 </ListItem>
-                <ListItem href="/docs" title="Documents partagés">
+                <ListItem href="/docs" icon={<Folders className="mr-1 h-5 w-5" />} title="Documents partagés">
                   Rechercher rapidement un fichier spécifique.
                 </ListItem>
               </ul>
@@ -63,7 +65,7 @@ export function MainNav({
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, href, ...props }, ref) => {
+>(({ className, title, children, href, icon, ...props }, ref) => {
   const navigate = useNavigate();
   return (
     <li>
@@ -77,7 +79,7 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
-          <div className="text-sm font-medium leading-none">{title}</div>
+          <div className="text-sm font-medium leading-none inline-flex items-center">{icon}{title}</div>
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>

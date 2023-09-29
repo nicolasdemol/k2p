@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Button } from "../ui/button";
 import {
   RotateCcw,
@@ -10,7 +10,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { Toggle } from "../ui/toggle";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Doc } from "@/interfaces/doc";
 
 interface Props {
@@ -19,6 +19,9 @@ interface Props {
   setScale: (scale: number) => void;
   rotation: number;
   setRotation: (scale: number) => void;
+  setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
+  fullScreen: boolean;
+  setFullScreen: (fullScreen: boolean) => void;
 }
 
 const ButtonGroup = ({
@@ -29,11 +32,12 @@ const ButtonGroup = ({
   setScale,
   rotation,
   setRotation,
+  setEditMode,
 }: Props) => {
   const navigate = useNavigate();
 
   return (
-    <div className="grid rounded-md grid-cols-3 items-center px-4 py-1 bg-white border-b">
+    <div className="grid rounded-md grid-cols-3 items-center px-4 py-1 bg-white border-b border-dashed">
       <div className="space-x-1 flex items-center">
         <Button
           size="sm"
@@ -59,13 +63,16 @@ const ButtonGroup = ({
         >
           <AlertCircle className="h-5 w-5" />
         </Button>
-        <Toggle size="sm">
+        <Toggle
+          size="sm"
+          onClick={() => setEditMode((prevState) => !prevState)}
+        >
           <Highlighter className="h-5 w-5" />
         </Toggle>
       </div>
 
       <div className="space-x-1 flex items-center justify-center">
-        <span className="text-gray-700 text-sm font-semibold bg-slate-100 py-1 px-2 rounded-md">
+        <span className="text-slate-900 text-sm font-semibold bg-slate-100 py-1 px-2 rounded-md">
           {Math.round(scale * 100)}%
         </span>
 

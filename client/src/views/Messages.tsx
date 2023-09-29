@@ -15,7 +15,7 @@ export default function MessagePage() {
 
   return (
       <div
-        className="h-[calc(100vh-70px)] grid w-full rounded-xl border border-gray-50 shadow-xl overflow-hidden"
+        className="h-full p-4 grid w-full rounded-xl border-gray-50 shadow-xl overflow-hidden"
         style={{ gridTemplateColumns: "25% 75%" }}
       >
         <Contacts changeChat={handleChatChange} />

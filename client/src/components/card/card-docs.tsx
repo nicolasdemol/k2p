@@ -7,10 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ChevronsUpDown, FileText } from "lucide-react";
+import { Eye, EyeOff, File, FolderTree } from "lucide-react";
 import { Button } from "../ui/button";
 import { Doc } from "@/interfaces/doc";
 import { cn } from "@/lib/utils";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 
 interface CardDocsProps {
   docs: Doc[];
@@ -60,7 +61,10 @@ export function CardDocs({
       <TableHeader>
         <TableRow>
           <TableHead className="flex justify-between items-center">
-            Documents associés
+            <span className="inline-flex items-center">
+              <FolderTree className="mr-2 h-4 w-4" />
+              Documents
+            </span>
             <div className="space-x-2">
               <Button
                 variant="ghost"
@@ -68,7 +72,11 @@ export function CardDocs({
                 className="w-9 p-0"
                 onClick={() => setIsOpen(!isOpen)}
               >
-                <ChevronsUpDown className="h-4 w-4" />
+                {isOpen ? (
+                  <Eye className="h-4 w-4" />
+                ) : (
+                  <EyeOff className="h-4 w-4" />
+                )}
               </Button>
             </div>
           </TableHead>
@@ -100,15 +108,23 @@ function DocItem({
   onClick: (event: React.MouseEvent<HTMLTableRowElement>) => void;
 }) {
   return (
-    <TableRow
-      className={cn("cursor-pointer", {
-        "text-[#1F51FF]": activeDoc?.name === doc.name,
-      })}
-      onClick={onClick}
-    >
-      <TableCell className="flex items-center">
-        <FileText className="mr-1 h-4 w-4" />
-        {doc.name}
+    <TableRow className="cursor-pointer" onClick={onClick}>
+      <TableCell className="flex justify-between items-center h-12">
+        <span
+          className={cn("inline-flex items-center",{
+            "text-[#1F51FF]": activeDoc?.name === doc.name,
+          })}
+        >
+          <File className="mr-1 h-4 w-4" />
+          {doc.name}
+        </span>
+        <Button
+          variant="ghost"
+          className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+        >
+          <DotsHorizontalIcon className="h-4 w-4" />
+          <span className="sr-only">Open menu</span>
+        </Button>
       </TableCell>
     </TableRow>
   );

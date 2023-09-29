@@ -1,3 +1,4 @@
+import { Card } from "@/interfaces/card";
 import { AxiosInstance } from "axios";
 
 export function cardsEndpoints(axiosInstance: AxiosInstance) {
@@ -12,7 +13,7 @@ export function cardsEndpoints(axiosInstance: AxiosInstance) {
       }
     },
 
-    getCardByRef: async (ref) => {
+    getCardByRef: async (ref: number | string) => {
       try {
         const response = await axiosInstance.get(`/cards/get/${ref}`);
         return response.data
@@ -22,7 +23,7 @@ export function cardsEndpoints(axiosInstance: AxiosInstance) {
       }
     },
 
-    addCard: async (cardData) => {
+    addCard: async (cardData: Card) => {
       try {
         const response = await axiosInstance.post("/cards/add", cardData);
         return response.data;
@@ -32,7 +33,7 @@ export function cardsEndpoints(axiosInstance: AxiosInstance) {
       }
     },
 
-    removeCard: async (cardId) => {
+    removeCard: async (cardId: string) => {
       try {
         const response = await axiosInstance.delete(`/cards/${cardId}`);
         return response.data;

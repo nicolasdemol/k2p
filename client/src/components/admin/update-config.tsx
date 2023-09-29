@@ -9,9 +9,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "../ui/input";
-import { Loader2 } from "lucide-react";
+import { FolderTree, Loader2 } from "lucide-react";
 import { api } from "@/services/api";
 import { useData } from "@/hooks/useData";
+import { toast } from "../ui/use-toast";
 
 export function UpdateConfig() {
   const { configs } = useData();
@@ -22,7 +23,25 @@ export function UpdateConfig() {
 
   const handleRefreshDocList = () => {
     setLoading(true);
-    api.refreshDocList().then(() => setLoading(false));
+    toast({
+      title: "L'actualisation des fichiers est en cours...",
+      description: `Le serveur traite les informations de chaque document situé en ${configs[0]?.remotePath}, vous pouvez quitter sans problème.`,
+    });
+    api
+      .refreshDocList()
+      .then((res) => {
+        toast({
+          title: res.message,
+        });
+        setLoading(false);
+      })
+      .catch((err) => {
+        toast({
+          variant: "destructive",
+          title: err.response.data.message,
+        });
+        setLoading(false);
+      });
   };
 
   return (
@@ -36,7 +55,6 @@ export function UpdateConfig() {
       <CardContent className="grid gap-4">
         <div className="flex gap-4">
           <Input
-            id="subject"
             placeholder="Dossier de recherche"
             value={remotePath}
             onChange={(e) => setRemotePath(e.target.value)}
@@ -49,8 +67,12 @@ export function UpdateConfig() {
           </Button>
         </div>
         <Button onClick={handleRefreshDocList} disabled={loading}>
-          {loading && <Loader2 className="h-5 w-5 animate-spin mr-2" />}
-          Rafraîchir la liste des documents
+          {loading ? (
+            <Loader2 className="h-5 w-5 animate-spin mr-2" />
+          ) : (
+            <FolderTree className="mr-2 h-5 w-5" />
+          )}
+          Actualiser la liste des documents
         </Button>
       </CardContent>
     </Card>

@@ -40,8 +40,10 @@ import {
 } from "../ui/form";
 import { api } from "@/services/api";
 import { useAuth } from "@/hooks/useAuth";
+import { useData } from "@/hooks/useData";
+import socket from "@/services/socket";
 
-const FormSchema = z.object({
+const ReportFormSchema = z.object({
   status: z.string({
     required_error: "Non sélectionné.",
   }),
@@ -49,7 +51,7 @@ const FormSchema = z.object({
     required_error: "Non sélectionnée.",
   }),
   label: z.string({
-    required_error: "Non sélectionné.",
+    required_error: "Non sélectionnée.",
   }),
   title: z
     .string({
@@ -66,20 +68,21 @@ const FormSchema = z.object({
 export function DataTableReport() {
   const { state } = useLocation();
   const { user } = useAuth();
+  const { setIssues } = useData();
   const [open, setOpen] = React.useState(state?.open || false);
   const [openStatus, setOpenStatus] = React.useState(false);
   const [openLabel, setOpenLabel] = React.useState(false);
   const [openPriority, setOpenPriority] = React.useState(false);
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof ReportFormSchema>>({
+    resolver: zodResolver(ReportFormSchema),
     defaultValues: {
       title: state?.title || "",
       label: state?.label,
     },
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof ReportFormSchema>) {
     const issueData = {
       _id: uuidv4(),
       reportedBy: user?._id,
@@ -89,15 +92,14 @@ export function DataTableReport() {
       toast({
         title: "Les informations viennent d'être ajoutées.",
       });
+      issueData.reportedBy = user;
+      socket.emit("new_issue", issueData);
       setOpen(false);
     });
   }
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={setOpen}
-    >
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="secondary" size="sm" className="h-8">
           <AlertCircle className="h-4 w-4 mr-2" />
